@@ -1,0 +1,19 @@
+WHO:
+joao.silva
+
+WHAT:
+powershell.exe executou script remoto
+
+WHEN:
+10/06/2026 14:22 UTC
+
+WHERE:
+Host FINANCE-01
+IP 192.168.1.20
+
+WHY:
+O script conectou-se a um IP
+malicioso identificado no VirusTotal.
+
+O alerta foi classificado como
+True Positive e escalado para L2.
