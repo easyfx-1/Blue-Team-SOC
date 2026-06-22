@@ -1,0 +1,172 @@
+# 🧪 ANY.RUN: Sandbox Interativa para Análise de Malware
+
+## 📌 Visão Geral
+
+ANY.RUN é uma plataforma de análise dinâmica de malware baseada em sandbox que permite executar arquivos, URLs e processos suspeitos em um ambiente isolado e controlado.
+
+Diferentemente de sandboxes tradicionais, o ANY.RUN oferece interação em tempo real com o ambiente analisado, permitindo que analistas observem o comportamento da ameaça enquanto ela é executada.
+
+A ferramenta é amplamente utilizada por:
+
+- SOC Analysts
+- Threat Hunters
+- Incident Responders
+- Malware Analysts
+- Equipes Blue Team
+
+---
+
+# ⚙️ Como Funciona
+
+O ANY.RUN cria uma máquina virtual isolada onde o artefato suspeito é executado.
+
+O analista pode observar:
+
+- Processos criados
+- Conexões de rede
+- Alterações no sistema
+- Criação de arquivos
+- Modificações no registro do Windows
+- Comunicação com servidores C2
+
+Fluxo simplificado:
+
+```text
+Arquivo Suspeito
+        ↓
+ Sandbox ANY.RUN
+        ↓
+ Execução Controlada
+        ↓
+ Coleta de Artefatos
+        ↓
+ Relatório de Análise
+```
+
+---
+
+# 🔍 Informações Coletadas
+
+Durante a execução, o ANY.RUN pode registrar:
+
+## Processos
+
+- Processos pai e filho
+- Cadeia de execução
+- Linha de comando
+
+## Rede
+
+- Endereços IP
+- Domínios
+- URLs
+- Requisições DNS
+- Comunicação HTTP/HTTPS
+
+## Sistema
+
+- Arquivos criados
+- Arquivos modificados
+- Exclusões
+- Persistência
+
+## Registro
+
+- Chaves criadas
+- Alterações no Registry
+- Run Keys
+
+---
+
+# 🛡️ Benefícios para Blue Team
+
+O ANY.RUN permite:
+
+- Identificar IOCs
+- Detectar comportamento malicioso
+- Entender técnicas utilizadas pelo malware
+- Investigar incidentes
+- Produzir regras de detecção
+
+---
+
+# 🔬 Casos de Uso
+
+## Análise de Malware
+
+Avaliar o comportamento de:
+
+- Trojans
+- Loaders
+- Ransomware
+- Infostealers
+
+---
+
+## Investigação de Phishing
+
+Analisar:
+
+- Arquivos anexados
+- URLs suspeitas
+- Documentos Office
+
+---
+
+## Threat Hunting
+
+Extrair:
+
+- Hashes
+- IPs
+- Domínios
+- Artefatos de rede
+
+---
+
+# 📊 Artefatos Obtidos
+
+A plataforma permite coletar:
+
+- Hashes (MD5, SHA1, SHA256)
+- Domínios
+- IPs
+- User-Agents
+- Indicadores de Persistência
+- IOC's de Rede
+
+---
+
+# ⚠️ Limitações
+
+Embora extremamente útil, malware sofisticados podem:
+
+- Detectar máquinas virtuais
+- Detectar ambientes sandbox
+- Alterar comportamento durante a análise
+- Utilizar técnicas anti-análise
+
+Por esse motivo, os resultados devem ser correlacionados com outras fontes de evidência.
+
+---
+
+# 🔵 Perspectiva Blue Team
+
+O ANY.RUN é uma ferramenta valiosa para:
+
+- Triagem de alertas
+- Resposta a incidentes
+- Threat Intelligence
+- Análise de malware
+- Criação de regras Sigma
+- Produção de IOC's
+
+Sua capacidade de visualização em tempo real permite compreender rapidamente a cadeia de execução de uma ameaça.
+
+---
+
+# 🎯 Conclusão
+
+ANY.RUN é uma das plataformas de sandbox mais utilizadas na área de segurança ofensiva e defensiva. Sua abordagem interativa fornece visibilidade detalhada do comportamento de arquivos e URLs suspeitos, auxiliando equipes Blue Team na identificação, investigação e contenção de ameaças.
+
+A combinação entre análise dinâmica, coleta de IOC's e visualização em tempo real torna a ferramenta um recurso essencial para profissionais de SOC, Threat Hunting e Incident Response.
