@@ -1,0 +1,153 @@
+# 🔤 Punycode: Entendendo Ataques de Homógrafos e Domínios Internacionalizados
+
+## 📌 Visão Geral
+
+Punycode é um método de codificação utilizado para representar caracteres Unicode dentro do sistema DNS, que originalmente suporta apenas caracteres ASCII.
+
+Seu objetivo legítimo é permitir que domínios utilizem caracteres de diferentes idiomas, como:
+
+- Português
+- Chinês
+- Árabe
+- Russo
+- Japonês
+
+Por exemplo:
+
+```text
+café.com
+```
+
+É convertido para:
+
+```text
+xn--caf-dma.com
+```
+
+O prefixo `xn--` indica que o domínio foi codificado utilizando Punycode.
+
+---
+
+# 🌍 Por Que o Punycode Existe?
+
+O DNS foi desenvolvido para trabalhar apenas com caracteres ASCII:
+
+```text
+a-z
+0-9
+-
+```
+
+Por isso, caracteres especiais precisam ser convertidos para um formato compatível antes de serem processados pelos servidores DNS.
+
+---
+
+# ⚠️ Uso Malicioso: Ataques de Homógrafos
+
+Embora seja uma tecnologia legítima, atacantes podem abusar do Punycode para criar domínios visualmente semelhantes a sites legítimos.
+
+Exemplo:
+
+Domínio legítimo:
+
+```text
+paypal.com
+```
+
+Domínio malicioso:
+
+```text
+раypal.com
+```
+
+Observe que a primeira letra "p" foi substituída por um caractere cirílico semelhante visualmente.
+
+Para o usuário:
+
+```text
+paypal.com
+```
+
+Para o DNS:
+
+```text
+xn--something.com
+```
+
+Essa técnica é conhecida como:
+
+**Homograph Attack (Ataque de Homógrafos)**
+
+---
+
+# 🎯 Objetivos do Atacante
+
+Os ataques utilizando Punycode geralmente têm como finalidade:
+
+- Roubo de credenciais
+- Phishing
+- Distribuição de malware
+- Captura de informações financeiras
+- Engenharia social
+
+---
+
+# 🔍 Como Identificar Domínios Suspeitos
+
+Alguns indicadores incluem:
+
+- Presença do prefixo `xn--`
+- Domínios muito semelhantes a marcas conhecidas
+- Caracteres visualmente idênticos aos originais
+- URLs recebidas por e-mail ou mensagens inesperadas
+
+Exemplo:
+
+```text
+xn--pple-43d.com
+```
+
+Pode tentar se passar por:
+
+```text
+apple.com
+```
+
+---
+
+# 🛡️ Mitigações
+
+## Para Usuários
+
+- Verificar cuidadosamente URLs.
+- Evitar clicar em links recebidos por e-mail sem validação.
+- Utilizar gerenciadores de senhas (eles identificam domínios incorretos).
+- Conferir certificados e o domínio real.
+
+## Para Equipes de Segurança
+
+- Monitorar registros DNS suspeitos.
+- Implementar filtros anti-phishing.
+- Utilizar Threat Intelligence.
+- Treinar usuários contra ataques de engenharia social.
+
+---
+
+# 🔵 Perspectiva Blue Team
+
+Punycode é frequentemente observado durante:
+
+- Investigação de campanhas de phishing
+- Análise de URLs suspeitas
+- Threat Hunting
+- Monitoramento DNS
+
+Analistas SOC devem estar atentos a domínios codificados com `xn--`, especialmente quando imitam marcas conhecidas.
+
+---
+
+# 🎯 Conclusão
+
+Punycode é uma tecnologia legítima criada para permitir domínios internacionalizados. Entretanto, seu uso indevido em ataques de homógrafos tornou-se uma técnica comum em campanhas de phishing e engenharia social.
+
+A identificação precoce de domínios suspeitos e a conscientização dos usuários são fundamentais para reduzir o risco desse tipo de ameaça.
