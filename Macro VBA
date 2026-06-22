@@ -1,0 +1,93 @@
+# 🔐 Ataques com Macro VBA em Documentos do Microsoft Office (Visão Blue Team)
+
+## 📌 Visão Geral
+
+As macros VBA (Visual Basic for Applications) são scripts embutidos em documentos do Microsoft Office, como Word (`.docm`) e Excel (`.xlsm`). Embora tenham sido criadas para automação de tarefas legítimas, elas são frequentemente exploradas por agentes maliciosos como vetor inicial de ataque.
+
+Em campanhas de phishing, macros VBA são usadas para executar código malicioso, baixar malware adicional ou estabelecer comunicação com servidores de Comando e Controle (C2).
+
+---
+
+## ⚙️ Fluxo do Ataque (Cadeia de Infecção com Macro VBA)
+
+Um ataque típico com macro VBA segue as etapas abaixo:
+
+### 1. 📧 Entrega do Ataque (Phishing)
+A vítima recebe um documento malicioso por e-mail ou download.
+
+### 2. 👤 Interação do Usuário
+O documento exibe mensagens como:
+- “Habilitar Conteúdo”
+- “Ativar Macros”
+
+Ao permitir a execução, o usuário ativa o código VBA oculto.
+
+### 3. 💻 Execução da Macro VBA
+O script VBA embutido é executado automaticamente pelo Microsoft Office.
+
+### 4. 🧨 Execução de Payload
+A macro pode:
+- Baixar arquivos maliciosos (malware)
+- Executar PowerShell ou CMD
+- Criar arquivos executáveis no sistema
+- Carregar cargas secundárias (stagers)
+
+### 5. 🕷️ Pós-Exploração
+Após a infecção inicial, o atacante pode:
+- Estabelecer comunicação com C2
+- Manter persistência no sistema
+- Exfiltrar dados sensíveis
+- Executar ataques laterais na rede
+
+---
+
+## 🧠 Técnicas Comuns em Macros Maliciosas
+
+- Execução de PowerShell via `WScript.Shell`
+- Execução de comandos CMD
+- Download de payloads remotos
+- Obfuscação de código VBA
+- Criação e execução de arquivos `.exe` maliciosos
+
+---
+
+## 🛡️ Detecção (Visão Blue Team / SOC)
+
+### 🔍 Monitoramento de Processos
+Indicadores importantes:
+- `WINWORD.EXE` ou `EXCEL.EXE` iniciando:
+  - `powershell.exe`
+  - `cmd.exe`
+  - `wscript.exe`
+
+---
+
+### 🌐 Indicadores de Rede
+- Conexões HTTP/HTTPS iniciadas por aplicativos Office
+- Download de executáveis logo após abertura do documento
+
+---
+
+### 📊 Logs e Telemetria
+Fontes importantes:
+- Microsoft Defender for Endpoint (MDE)
+- AMSI (Antimalware Scan Interface)
+- Logs de criação de processos (Event ID 4688)
+
+---
+
+## 🔒 Estratégias de Mitigação
+
+- Bloquear macros em arquivos provenientes da internet
+- Permitir apenas macros assinadas digitalmente
+- Restringir execução de processos filhos pelo Office
+- Utilizar AppLocker ou Windows Defender Application Control (WDAC)
+- Filtrar anexos suspeitos em e-mails (`.docm`, `.xlsm`)
+
+---
+
+## 🎯 Conclusão
+
+Ataques com macros VBA continuam sendo uma técnica comum de acesso inicial devido ao fator humano e à confiança em aplicações do Office.
+
+Para equipes de Blue Team e SOC, a detecção precoce baseada em comportamento (processos, rede e logs) é essencial para interromper a cadeia de ataque antes da execução do payload principal.
