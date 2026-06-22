@@ -1,0 +1,263 @@
+# ⛓️ Cyber Kill Chain: Compreendendo o Ciclo de um Ataque Cibernético
+
+## 📌 Visão Geral
+
+A **Cyber Kill Chain** é um framework desenvolvido pela :contentReference[oaicite:0]{index=0} em 2011 para descrever as etapas que um adversário percorre durante uma intrusão cibernética.
+
+Inspirado no conceito militar de *Kill Chain*, o modelo permite que equipes de segurança compreendam o comportamento dos atacantes, identifiquem atividades maliciosas em diferentes estágios e interrompam o ataque antes que ele atinja seus objetivos.
+
+A Cyber Kill Chain é amplamente utilizada por:
+
+- SOC Analysts
+- Threat Hunters
+- Incident Responders
+- Security Engineers
+- Blue Teams
+
+O principal objetivo é identificar em qual fase da cadeia o adversário se encontra e aplicar controles defensivos para interromper sua progressão.
+
+---
+
+# 🎯 Objetivos da Cyber Kill Chain
+
+A Cyber Kill Chain ajuda organizações a:
+
+- Entender como ataques são conduzidos.
+- Identificar lacunas de segurança.
+- Melhorar estratégias de detecção.
+- Fortalecer processos de resposta a incidentes.
+- Reduzir a superfície de ataque.
+
+---
+
+# 🔗 As 7 Fases da Cyber Kill Chain
+
+## 1. Reconnaissance (Reconhecimento)
+
+Nesta fase, o atacante coleta informações sobre o alvo.
+
+O objetivo é identificar:
+
+- Funcionários
+- Infraestrutura
+- Tecnologias utilizadas
+- Serviços expostos
+- Endereços de e-mail
+- Domínios e subdomínios
+
+### Técnicas Comuns
+
+- OSINT
+- WHOIS
+- Pesquisa em redes sociais
+- Google Dorks
+- Coleta de e-mails
+- Análise de vazamentos de dados
+
+### Exemplo
+
+```text
+Empresa → Funcionários → E-mails → Campanha de Phishing
+```
+
+---
+
+## 2. Weaponization (Armação)
+
+Após coletar informações, o atacante cria ou prepara o artefato que será utilizado no ataque.
+
+### Exemplos
+
+- Documentos Office com macros maliciosas
+- Malware personalizado
+- Backdoors
+- Exploits
+- Payloads
+- Infraestrutura C2
+
+### Objetivo
+
+Transformar informações coletadas em ferramentas ofensivas.
+
+---
+
+## 3. Delivery (Entrega)
+
+É o momento em que o atacante entrega o artefato ao alvo.
+
+### Métodos Comuns
+
+- Phishing
+- Spear Phishing
+- Anexos maliciosos
+- Links maliciosos
+- USB Drops
+- Watering Hole Attacks
+
+### Exemplo
+
+```text
+E-mail → Documento Malicioso → Usuário
+```
+
+---
+
+## 4. Exploitation (Exploração)
+
+Nesta fase ocorre a execução do código malicioso ou exploração de uma vulnerabilidade.
+
+### Exemplos
+
+- Execução de macro VBA
+- Exploração de CVEs
+- Zero-Day Exploits
+- Falhas de configuração
+
+### Indicadores
+
+- Processos inesperados
+- Alterações de registro
+- Comandos suspeitos
+- Criação de serviços
+
+---
+
+## 5. Installation (Instalação)
+
+Após obter acesso, o atacante busca persistência.
+
+O objetivo é garantir que o acesso seja mantido mesmo após reinicializações ou correções.
+
+### Técnicas Comuns
+
+- Web Shells
+- Backdoors
+- Run Keys
+- Startup Folder
+- Serviços do Windows
+- Scheduled Tasks
+
+### Exemplo
+
+```text
+Malware → Registro do Windows → Persistência
+```
+
+---
+
+## 6. Command and Control (C2)
+
+O atacante estabelece comunicação entre o sistema comprometido e sua infraestrutura.
+
+Essa comunicação permite:
+
+- Envio de comandos
+- Recebimento de dados
+- Download de novos payloads
+- Controle remoto
+
+### Protocolos Utilizados
+
+- HTTP
+- HTTPS
+- DNS
+- WebSockets
+
+### Técnicas Comuns
+
+- Beaconing
+- DNS Tunneling
+- Fast Flux
+
+### Exemplo
+
+```text
+Máquina Infectada
+        ↓
+Servidor C2
+        ↓
+Comandos do Atacante
+```
+
+---
+
+## 7. Actions on Objectives (Ações Sobre os Objetivos)
+
+É a fase final do ataque.
+
+O adversário executa os objetivos definidos durante o planejamento.
+
+### Exemplos
+
+- Roubo de credenciais
+- Exfiltração de dados
+- Ransomware
+- Movimento lateral
+- Escalada de privilégios
+- Destruição de backups
+- Sabotagem de sistemas
+
+### Objetivo
+
+Obter benefício financeiro, espionagem, acesso persistente ou destruição de ativos.
+
+---
+
+# 🛡️ Como a Cyber Kill Chain Ajuda o Blue Team
+
+A Cyber Kill Chain permite que analistas identifiquem atividades suspeitas em diferentes estágios do ataque.
+
+Quanto mais cedo uma fase for interrompida:
+
+- Menor será o impacto.
+- Menor será o custo da resposta.
+- Menor será o tempo de permanência do invasor.
+
+Exemplo:
+
+| Fase | Benefício da Detecção |
+|--------|--------|
+| Reconnaissance | Impede preparação do ataque |
+| Delivery | Bloqueia a entrega do malware |
+| Exploitation | Evita execução do código |
+| Installation | Impede persistência |
+| C2 | Interrompe comunicação do atacante |
+| Actions on Objectives | Minimiza danos e exfiltração |
+
+---
+
+# ⚠️ Limitações da Cyber Kill Chain
+
+Embora seja extremamente útil, a Cyber Kill Chain possui algumas limitações:
+
+- Foco principal em ataques externos.
+- Menor cobertura para ameaças internas.
+- Não representa perfeitamente ataques modernos baseados em nuvem.
+- Não cobre toda a complexidade observada em grupos APT modernos.
+
+Por esse motivo, muitas organizações utilizam também o framework:
+
+- :contentReference[oaicite:1]{index=1}
+
+---
+
+# 🔵 Perspectiva Blue Team
+
+A Cyber Kill Chain continua sendo uma ferramenta valiosa para:
+
+- Threat Hunting
+- Resposta a Incidentes
+- Detecção de Intrusões
+- Análise de Malware
+- Desenvolvimento de Casos de Uso para SIEM
+- Criação de Regras de Detecção
+
+Compreender cada fase permite que analistas identifiquem rapidamente atividades suspeitas e interrompam a progressão do ataque antes que os objetivos do adversário sejam alcançados.
+
+---
+
+# 🎯 Conclusão
+
+A Cyber Kill Chain fornece uma visão estruturada do ciclo de vida de um ataque cibernético. Ao compreender como adversários conduzem operações desde o reconhecimento até a execução de seus objetivos, equipes de segurança conseguem desenvolver estratégias de prevenção, detecção e resposta mais eficazes.
+
+Para profissionais de Blue Team, SOC, Threat Hunting e Incident Response, dominar a Cyber Kill Chain é fundamental para entender o comportamento dos atacantes e fortalecer a postura de segurança da organização.
