@@ -1,0 +1,249 @@
+# 🕵️ OSINT Framework: Diretório de Ferramentas para Inteligência de Fontes Abertas
+
+## 📌 Visão Geral
+
+O **OSINT Framework** é uma plataforma que organiza e categoriza centenas de ferramentas, recursos e técnicas utilizadas em atividades de **OSINT (Open-Source Intelligence)**.
+
+Diferentemente de ferramentas como theHarvester ou Hunter.io, o OSINT Framework não realiza coletas diretamente. Seu propósito é funcionar como um **mapa de navegação**, permitindo que analistas encontrem rapidamente ferramentas especializadas para diferentes tipos de investigação.
+
+A plataforma é amplamente utilizada por:
+
+- SOC Analysts
+- Threat Hunters
+- Investigadores Digitais
+- Analistas de Threat Intelligence
+- Red Teams
+- Blue Teams
+- Jornalistas Investigativos
+- Pesquisadores de Segurança
+
+---
+
+# 🎯 O Que é OSINT?
+
+**OSINT (Open-Source Intelligence)** consiste na coleta, análise e correlação de informações obtidas a partir de fontes públicas e legalmente acessíveis.
+
+Exemplos de fontes OSINT:
+
+- Motores de busca
+- Redes sociais
+- Fóruns
+- Registros DNS
+- WHOIS
+- Bancos de dados públicos
+- Repositórios Git
+- Sites corporativos
+- Vazamentos públicos
+
+O objetivo é transformar dados públicos em informações úteis para análise e tomada de decisão.
+
+---
+
+# 🌐 O Que é o OSINT Framework?
+
+O OSINT Framework é um diretório organizado de recursos OSINT.
+
+Ele permite localizar rapidamente ferramentas para investigar:
+
+- Domínios
+- Endereços IP
+- E-mails
+- Nomes de usuários
+- Redes sociais
+- Imagens
+- Documentos
+- Infraestruturas
+- Criptomoedas
+- Vazamentos de dados
+
+Em vez de pesquisar individualmente por ferramentas, o analista utiliza o framework como ponto central de consulta.
+
+---
+
+# 🗂️ Estrutura do Framework
+
+As ferramentas são organizadas em categorias e subcategorias.
+
+Exemplo simplificado:
+
+```text
+OSINT Framework
+│
+├── Username
+├── Email Address
+├── Domain Name
+├── IP Address
+├── Social Networks
+├── Images
+├── Documents
+├── Public Records
+├── Dark Web
+├── Threat Intelligence
+└── Metadata
+```
+
+Essa organização facilita a escolha da ferramenta adequada para cada investigação.
+
+---
+
+# 🔍 Categorias Mais Utilizadas
+
+## 📧 E-mail
+
+Ferramentas para:
+
+- Descoberta de e-mails
+- Verificação de e-mails
+- Vazamentos de credenciais
+- Relações entre contatos
+
+Exemplos:
+
+- Hunter.io
+- Have I Been Pwned
+
+---
+
+## 🌐 Domínios
+
+Ferramentas para:
+
+- WHOIS
+- DNS
+- Subdomínios
+- Certificados TLS
+- Infraestrutura pública
+
+Exemplos:
+
+- SecurityTrails
+- DNSDumpster
+
+---
+
+## 🖥️ Endereços IP
+
+Permitem identificar:
+
+- Geolocalização
+- ASN
+- Hospedagem
+- Histórico de infraestrutura
+
+Exemplos:
+
+- Shodan
+- Censys
+
+---
+
+## 👤 Usernames
+
+Auxiliam na descoberta de perfis associados a um mesmo nome de usuário.
+
+Exemplos:
+
+- Sherlock
+- Namechk
+
+---
+
+## 📸 Imagens
+
+Ferramentas para:
+
+- Busca reversa
+- Análise de metadados
+- Geolocalização
+
+Exemplos:
+
+- Google Images
+- TinEye
+
+---
+
+# 🔷 Relação com a Cyber Kill Chain
+
+O OSINT Framework é utilizado principalmente durante a fase de:
+
+## Reconnaissance (Reconhecimento)
+
+Nesta etapa, o objetivo é coletar informações sobre o alvo antes de qualquer interação direta.
+
+Fluxo simplificado:
+
+```text
+Alvo
+   ↓
+OSINT Framework
+   ↓
+Ferramentas Especializadas
+   ↓
+Informações Públicas
+```
+
+Quanto melhor o reconhecimento, maior a capacidade de compreender a superfície de ataque de uma organização.
+
+---
+
+# 🛡️ Perspectiva Blue Team
+
+Embora seja frequentemente associado a atividades ofensivas, o OSINT Framework possui enorme valor defensivo.
+
+Equipes Blue Team podem utilizá-lo para:
+
+- Descobrir ativos expostos.
+- Identificar vazamentos de informações.
+- Avaliar a superfície de ataque externa.
+- Monitorar exposição de funcionários.
+- Apoiar investigações de incidentes.
+- Fortalecer programas de Threat Intelligence.
+
+---
+
+# 🔬 Casos de Uso
+
+O OSINT Framework é amplamente utilizado em:
+
+- Threat Intelligence
+- Threat Hunting
+- Surface Attack Management
+- Due Diligence
+- Investigação Digital
+- Auditorias de Segurança
+- Análise de Exposição Externa
+- Resposta a Incidentes
+
+---
+
+# ⚠️ Limitações
+
+Apesar de extremamente útil, o framework possui algumas limitações:
+
+- Depende da disponibilidade de informações públicas.
+- Algumas ferramentas possuem restrições ou planos pagos.
+- Os resultados podem variar conforme a fonte utilizada.
+- Informações públicas podem estar desatualizadas.
+
+Por esse motivo, os resultados devem ser validados e correlacionados com outras fontes de inteligência.
+
+---
+
+# 🔵 Benefícios para Analistas de Segurança
+
+O OSINT Framework oferece:
+
+- Centralização de recursos OSINT.
+- Economia de tempo durante investigações.
+- Acesso rápido a ferramentas especializadas.
+- Maior eficiência em atividades de reconhecimento.
+- Apoio à análise de ameaças e incidentes.
+
+---
+
+# 🎯 Conclusão
+
+O OSINT Framework é uma das referências mais importantes para profissionais que trabalham com inteligência de fontes abertas. Sua estrutura organizada permite localizar rapidamente ferramentas especializadas para investigação de pessoas, domínios, infraestrutura, redes sociais e diversos outros alvos.
+
+Para profissionais de Blue Team, SOC, Threat Hunting e Threat Intelligence, o OSINT Framework representa um recurso fundamental para compreender a exposição digital de organizações e fortalecer a postura defensiva contra ameaças modernas.
