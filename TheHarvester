@@ -1,0 +1,177 @@
+# 🧰 theHarvester: Coleta de Informações para OSINT e Reconhecimento
+
+## 📌 Visão Geral
+
+O **theHarvester** é uma ferramenta de **Open-Source Intelligence (OSINT)** utilizada para coleta de informações públicas sobre organizações, domínios e indivíduos.
+
+Amplamente utilizada por profissionais de segurança ofensiva e defensiva, a ferramenta auxilia na fase de **Reconnaissance (Reconhecimento)** do Cyber Kill Chain, permitindo identificar ativos expostos que podem representar riscos para uma organização.
+
+O objetivo do theHarvester é consolidar informações disponíveis publicamente a partir de diversas fontes abertas, facilitando o mapeamento da superfície de ataque de um alvo.
+
+---
+
+# 🎯 Objetivos da Ferramenta
+
+O theHarvester permite identificar:
+
+- Endereços de e-mail
+- Subdomínios
+- Endereços IP
+- Hosts expostos
+- URLs
+- Nomes de funcionários
+- Infraestrutura pública
+- Serviços associados a um domínio
+
+Essas informações podem ser utilizadas durante avaliações de segurança, inventário de ativos, threat intelligence e análise de exposição externa.
+
+---
+
+# 🔍 Informações Coletadas
+
+## 📧 Endereços de E-mail
+
+A ferramenta pode localizar e-mails associados a um domínio a partir de fontes públicas.
+
+Exemplo:
+
+```text
+empresa.com
+```
+
+Possíveis resultados:
+
+```text
+contato@empresa.com
+suporte@empresa.com
+rh@empresa.com
+```
+
+Essas informações ajudam a identificar possíveis alvos para campanhas de phishing e engenharia social.
+
+---
+
+## 🌐 Subdomínios
+
+Permite identificar serviços expostos através de subdomínios públicos.
+
+Exemplo:
+
+```text
+portal.empresa.com
+vpn.empresa.com
+mail.empresa.com
+dev.empresa.com
+```
+
+A descoberta de subdomínios auxilia na identificação de ativos esquecidos ou mal configurados.
+
+---
+
+## 🖥️ Endereços IP
+
+O theHarvester pode associar domínios a endereços IP públicos.
+
+Exemplo:
+
+```text
+empresa.com → 203.0.113.10
+```
+
+Essa informação auxilia na análise da infraestrutura exposta à internet.
+
+---
+
+## 🔗 URLs e Hosts
+
+A ferramenta também pode localizar URLs relacionadas ao domínio analisado.
+
+Exemplo:
+
+```text
+https://portal.empresa.com
+https://api.empresa.com
+https://dev.empresa.com
+```
+
+Isso ajuda a expandir o mapeamento da superfície de ataque.
+
+---
+
+# ⚙️ Fontes de Dados Utilizadas
+
+O theHarvester consulta diversas fontes públicas de informação.
+
+Alguns exemplos incluem:
+
+- Motores de busca
+- Certificados digitais públicos
+- Bases DNS
+- Bancos de dados de exposição pública
+- Serviços de inteligência de ameaças
+
+A disponibilidade das fontes pode variar conforme a versão da ferramenta.
+
+---
+
+# 🔄 Fluxo Simplificado
+
+```text
+Domínio Alvo
+      ↓
+theHarvester
+      ↓
+Consulta Fontes Públicas
+      ↓
+Coleta de Dados
+      ↓
+Relatório de Reconhecimento
+```
+
+---
+
+# 🛡️ Aplicações para Blue Team
+
+Embora seja amplamente conhecida em contextos ofensivos, a ferramenta também possui grande valor defensivo.
+
+Equipes de Blue Team podem utilizá-la para:
+
+- Descobrir ativos expostos à internet.
+- Identificar subdomínios esquecidos.
+- Avaliar exposição de e-mails corporativos.
+- Realizar inventário externo.
+- Apoiar atividades de Attack Surface Management (ASM).
+- Validar informações públicas da organização.
+
+---
+
+# 🔵 Relação com o Cyber Kill Chain
+
+O theHarvester está diretamente associado à fase:
+
+## Reconnaissance (Reconhecimento)
+
+Nesta etapa, atacantes e defensores coletam informações sobre o alvo sem necessariamente interagir diretamente com seus sistemas.
+
+Quanto mais informações forem obtidas durante o reconhecimento, maior será a capacidade de planejar ataques ou fortalecer a defesa.
+
+---
+
+# ⚠️ Limitações
+
+Apesar de ser uma ferramenta poderosa, o theHarvester possui algumas limitações:
+
+- Depende de informações publicamente disponíveis.
+- Não substitui scanners de vulnerabilidade.
+- Resultados podem variar conforme a disponibilidade das fontes consultadas.
+- Nem todas as informações encontradas são necessariamente válidas ou atualizadas.
+
+Por esse motivo, os resultados devem ser analisados e validados antes de serem utilizados em processos de segurança.
+
+---
+
+# 🎯 Conclusão
+
+O theHarvester é uma das ferramentas de OSINT mais conhecidas na área de cibersegurança. Sua capacidade de coletar e correlacionar informações públicas permite identificar e-mails, subdomínios, IPs e outros ativos associados a uma organização.
+
+Para equipes de Blue Team, a ferramenta é extremamente útil para mapeamento de superfície de ataque, inventário de ativos externos e identificação de exposições que poderiam ser exploradas por adversários durante a fase de reconhecimento de um ataque.
