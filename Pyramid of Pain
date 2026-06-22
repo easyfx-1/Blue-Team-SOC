@@ -1,0 +1,184 @@
+# 🔺 Pyramid of Pain - Uma Perspectiva Blue Team
+
+## 📌 Introdução
+
+A Pyramid of Pain é um modelo criado por David Bianco para demonstrar o impacto que diferentes indicadores de comprometimento (IOCs) causam em um adversário quando são detectados e bloqueados.
+
+O conceito central da pirâmide é simples: quanto mais alto o nível do indicador identificado pela equipe de defesa, maior será o custo operacional para o atacante adaptar sua campanha.
+
+Enquanto indicadores básicos como hashes podem ser alterados em segundos, técnicas, táticas e procedimentos (TTPs) exigem mudanças profundas na forma como o atacante opera.
+
+Por esse motivo, equipes de SOC, Threat Hunting e Blue Team devem priorizar detecções em níveis superiores da pirâmide sempre que possível.
+
+---
+
+# Estrutura da Pyramid of Pain
+
+## 1. Hash Values
+
+Hashes são identificadores únicos gerados a partir de arquivos.
+
+### Exemplos:
+
+* MD5
+* SHA1
+* SHA256
+
+### Vantagens
+
+* Fácil identificação de malware conhecido.
+* Útil para bloqueios rápidos.
+
+### Limitações
+
+* O atacante pode recompilar ou modificar o arquivo e gerar um novo hash.
+
+### Dor para o atacante
+
+🟢 Muito baixa.
+
+---
+
+## 2. IP Addresses
+
+Endereços IP podem identificar servidores utilizados pelo atacante.
+
+### Exemplos:
+
+* Servidores de Comando e Controle (C2)
+* Infraestrutura de phishing
+* Hospedagem de malware
+
+### Vantagens
+
+* Fácil bloqueio em firewalls e IDS/IPS.
+
+### Limitações
+
+* O atacante pode migrar rapidamente para outro IP.
+
+### Dor para o atacante
+
+🟢 Baixa.
+
+---
+
+## 3. Domain Names
+
+Domínios utilizados durante campanhas maliciosas.
+
+### Exemplos:
+
+* Sites de phishing
+* Infraestrutura C2
+* Distribuição de malware
+
+### Vantagens
+
+* Permite bloqueio de campanhas inteiras.
+
+### Limitações
+
+* Domínios podem ser substituídos rapidamente.
+
+### Dor para o atacante
+
+🟡 Moderada.
+
+---
+
+## 4. Network Artifacts
+
+Artefatos observados no tráfego de rede.
+
+### Exemplos:
+
+* User-Agent incomum
+* Padrões de URI
+* DNS Tunneling
+* Beaconing C2
+
+### Vantagens
+
+* Mais difíceis de modificar sem impactar a operação do malware.
+
+### Limitações
+
+* Podem ser alterados por atacantes experientes.
+
+### Dor para o atacante
+
+🟡 Alta.
+
+---
+
+## 5. Tools
+
+Ferramentas utilizadas pelo adversário durante o ataque.
+
+### Exemplos:
+
+* Malware personalizado
+* Backdoors
+* Loaders
+* Frameworks ofensivos
+
+### Vantagens
+
+* Permite identificar campanhas inteiras.
+* Regras YARA e assinaturas podem ser utilizadas.
+
+### Limitações
+
+* O atacante pode trocar de ferramenta, porém com custo operacional.
+
+### Dor para o atacante
+
+🟠 Muito alta.
+
+---
+
+## 6. TTPs (Tactics, Techniques and Procedures)
+
+Representam o comportamento do atacante.
+
+### Exemplos:
+
+* Phishing direcionado
+* Movimento lateral
+* Persistência via Registry Run Keys
+* Criação de serviços maliciosos
+* DNS Tunneling
+
+### Vantagens
+
+* Extremamente difíceis de modificar.
+* Permitem identificar diferentes campanhas do mesmo grupo.
+
+### Limitações
+
+* Exigem maior maturidade defensiva para detecção.
+
+### Dor para o atacante
+
+🔴 Extremamente alta.
+
+---
+
+# Aplicação para Blue Team
+
+Uma equipe de Blue Team madura não deve depender exclusivamente de IOC's simples.
+
+O foco deve estar na identificação de comportamentos maliciosos, padrões operacionais e TTPs observados durante a intrusão.
+
+Ao detectar comportamentos em vez de artefatos específicos, a organização aumenta significativamente sua capacidade de detectar ameaças novas, variantes de malware e campanhas avançadas.
+
+---
+
+# Conclusão
+
+A Pyramid of Pain demonstra que nem todos os indicadores possuem o mesmo valor defensivo.
+
+Embora hashes, IPs e domínios sejam úteis para resposta rápida, os maiores ganhos para equipes de segurança estão na identificação de ferramentas e principalmente TTPs.
+
+Quanto mais alto na pirâmide uma detecção estiver, maior será o esforço exigido do adversário para continuar sua operação, aumentando as chances de detecção, contenção e resposta ao incidente.
