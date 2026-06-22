@@ -1,0 +1,174 @@
+# 🌐 Fast Flux: Técnica de Evasão e Resiliência em Infraestruturas Maliciosas
+
+## 📌 Visão Geral
+
+**Fast Flux** é uma técnica utilizada por agentes maliciosos para aumentar a disponibilidade, resiliência e anonimato de sua infraestrutura. Ela consiste em associar um mesmo domínio a múltiplos endereços IP que mudam constantemente em intervalos curtos de tempo.
+
+Essa abordagem dificulta a identificação e o bloqueio de servidores utilizados para atividades maliciosas, como:
+
+- Comando e Controle (C2)
+- Hospedagem de malware
+- Phishing
+- Botnets
+- Exfiltração de dados
+
+Fast Flux é frequentemente observado em campanhas avançadas que buscam evitar listas de bloqueio (blacklists) e dificultar análises de inteligência de ameaças.
+
+---
+
+# ⚙️ Como Funciona
+
+Em uma infraestrutura tradicional:
+
+```text
+exemplo.com → 192.168.1.10
+```
+
+O domínio aponta para um único endereço IP.
+
+Em um ambiente Fast Flux:
+
+```text
+malicioso.com → 10.10.10.1
+malicioso.com → 20.20.20.2
+malicioso.com → 30.30.30.3
+malicioso.com → 40.40.40.4
+```
+
+Após alguns minutos:
+
+```text
+malicioso.com → 50.50.50.5
+malicioso.com → 60.60.60.6
+malicioso.com → 70.70.70.7
+```
+
+Os registros DNS possuem um valor de TTL (Time To Live) muito baixo, forçando consultas frequentes e permitindo que os IPs sejam alterados constantemente.
+
+---
+
+# 🎯 Objetivos do Atacante
+
+O uso de Fast Flux oferece diversas vantagens operacionais:
+
+- Dificultar o bloqueio da infraestrutura.
+- Aumentar a sobrevivência da operação maliciosa.
+- Esconder o servidor principal.
+- Distribuir o tráfego entre múltiplos hosts comprometidos.
+- Tornar investigações forenses mais complexas.
+
+---
+
+# 🤖 Relação com Botnets
+
+Uma característica comum do Fast Flux é o uso de máquinas infectadas como proxies.
+
+Fluxo simplificado:
+
+```text
+Vítima
+   ↓
+Domínio Malicioso
+   ↓
+Host Infectado #1
+Host Infectado #2
+Host Infectado #3
+   ↓
+Servidor Principal do Atacante
+```
+
+Dessa forma, mesmo que alguns hosts sejam removidos da rede, a infraestrutura continua operacional.
+
+---
+
+# 🔄 Single Fast Flux vs Double Fast Flux
+
+## Single Fast Flux
+
+Apenas os registros DNS do domínio mudam constantemente.
+
+Exemplo:
+
+```text
+malicioso.com → IP A
+malicioso.com → IP B
+malicioso.com → IP C
+```
+
+---
+
+## Double Fast Flux
+
+Além dos IPs do domínio, os servidores DNS também mudam constantemente.
+
+Exemplo:
+
+```text
+malicioso.com → IP A
+malicioso.com → IP B
+
+ns1.malicioso.com → IP X
+ns2.malicioso.com → IP Y
+```
+
+Isso adiciona uma camada extra de evasão e resiliência.
+
+---
+
+# 🔍 Indicadores de Fast Flux
+
+Analistas de segurança podem identificar Fast Flux observando:
+
+- Grande quantidade de IPs associados ao mesmo domínio.
+- Mudanças frequentes nos registros DNS.
+- TTL extremamente baixo.
+- IPs distribuídos geograficamente.
+- Infraestrutura associada a botnets conhecidas.
+
+---
+
+# 🛡️ Detecção e Mitigação
+
+### Monitoramento DNS
+
+Analisar:
+
+- Frequência de alterações DNS.
+- Quantidade de IPs vinculados ao domínio.
+- Padrões incomuns de resolução.
+
+### Threat Intelligence
+
+Comparar domínios suspeitos com:
+
+- Feeds de IOC
+- Bases de reputação
+- Indicadores de botnets conhecidas
+
+### Ferramentas Utilizadas
+
+- Wireshark
+- Zeek
+- Splunk
+- Microsoft Sentinel
+- Security Onion
+- DNS Passive
+
+---
+
+# 🔺 Relação com a Pyramid of Pain
+
+Na Pyramid of Pain, Fast Flux está relacionado principalmente aos níveis:
+
+- IP Addresses
+- Domain Names
+
+Embora o atacante possa trocar IPs rapidamente, detectar padrões de Fast Flux permite identificar e interromper parte significativa da infraestrutura utilizada em campanhas maliciosas.
+
+---
+
+# 🎯 Conclusão
+
+Fast Flux é uma técnica de evasão baseada em DNS utilizada para aumentar a disponibilidade e dificultar a derrubada de infraestruturas maliciosas. Ao distribuir serviços entre diversos endereços IP e alterar registros DNS constantemente, atacantes conseguem tornar operações de phishing, malware e C2 mais resilientes contra bloqueios e ações defensivas.
+
+Para equipes de Blue Team, monitorar comportamento DNS, TTLs anormais e grandes volumes de mudanças de resolução é fundamental para identificar atividades relacionadas a Fast Flux e interromper campanhas maliciosas antes que causem impacto significativo.
