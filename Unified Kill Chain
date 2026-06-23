@@ -1,0 +1,243 @@
+# Unified Kill Chain (UKC) - Visão Geral para Blue Team
+
+## Introdução
+
+A **Unified Kill Chain (UKC)** é um framework de segurança desenvolvido por Paul Pols em 2017 com o objetivo de complementar modelos tradicionais como a Cyber Kill Chain da Lockheed Martin e o MITRE ATT&CK.
+
+Diferentemente de frameworks mais antigos, a UKC descreve o ciclo completo de um ataque cibernético através de 18 fases, permitindo que analistas de segurança, SOC Analysts, Threat Hunters e Incident Responders compreendam melhor o comportamento dos adversários e identifiquem oportunidades para interromper uma intrusão em diferentes estágios.
+
+---
+
+# Fases da Unified Kill Chain
+
+## 1. Reconnaissance
+
+Pesquisa, identificação e seleção de alvos por meio de reconhecimento ativo ou passivo.
+
+**Exemplos:**
+
+* OSINT
+* Coleta de e-mails
+* Pesquisa de funcionários
+* Enumeração de domínios
+
+---
+
+## 2. Weaponization
+
+Preparação dos recursos necessários para a execução do ataque.
+
+**Exemplos:**
+
+* Criação de malware
+* Documentos com macros VBA
+* Desenvolvimento de exploits
+* Infraestrutura de C2
+
+---
+
+## 3. Delivery
+
+Entrega da carga maliciosa ao ambiente da vítima.
+
+**Exemplos:**
+
+* Phishing
+* Anexos maliciosos
+* Links maliciosos
+* USB Drop Attack
+
+---
+
+## 4. Social Engineering
+
+Manipulação psicológica para induzir a vítima a executar ações inseguras.
+
+**Exemplos:**
+
+* Phishing
+* Spear Phishing
+* Vishing
+* Pretexting
+
+---
+
+## 5. Exploitation
+
+Exploração de vulnerabilidades para obtenção de acesso inicial.
+
+**Exemplos:**
+
+* Exploração de CVEs
+* Zero-Day Exploits
+* Execução de macros maliciosas
+
+---
+
+## 6. Persistence
+
+Técnicas utilizadas para manter acesso ao sistema comprometido.
+
+**Exemplos:**
+
+* Run Keys
+* Startup Folder
+* Serviços do Windows
+* Web Shells
+
+---
+
+## 7. Defense Evasion
+
+Técnicas utilizadas para evitar detecção por mecanismos de segurança.
+
+**Exemplos:**
+
+* Obfuscação
+* Timestomping
+* Masquerading
+* Desativação de ferramentas de segurança
+
+---
+
+## 8. Command & Control (C2)
+
+Comunicação entre o sistema comprometido e a infraestrutura controlada pelo atacante.
+
+**Exemplos:**
+
+* HTTP/HTTPS Beaconing
+* DNS Tunneling
+* Reverse Shells
+
+---
+
+## 9. Pivoting
+
+Uso de um sistema comprometido como ponte para alcançar outros sistemas.
+
+**Objetivo:**
+Expandir o acesso dentro da rede.
+
+---
+
+## 10. Discovery
+
+Coleta de informações sobre o ambiente comprometido.
+
+**Exemplos:**
+
+* Usuários existentes
+* Compartilhamentos de rede
+* Serviços internos
+* Controladores de domínio
+
+---
+
+## 11. Privilege Escalation
+
+Elevação de privilégios para obter permissões mais elevadas.
+
+**Exemplos:**
+
+* Exploração de falhas locais
+* Abuso de configurações incorretas
+
+---
+
+## 12. Execution
+
+Execução de código controlado pelo atacante.
+
+**Exemplos:**
+
+* PowerShell
+* CMD
+* Scripts
+* Binários maliciosos
+
+---
+
+## 13. Credential Access
+
+Obtenção de credenciais de usuários ou serviços.
+
+**Exemplos:**
+
+* Keylogging
+* Credential Dumping
+* Captura de hashes
+
+---
+
+## 14. Lateral Movement
+
+Movimentação entre sistemas dentro da rede comprometida.
+
+**Objetivo:**
+Expandir o alcance da intrusão.
+
+---
+
+## 15. Collection
+
+Coleta de informações relevantes para os objetivos do atacante.
+
+**Exemplos:**
+
+* Documentos
+* Bancos de dados
+* Informações financeiras
+* Dados corporativos
+
+---
+
+## 16. Exfiltration
+
+Extração dos dados coletados para fora do ambiente comprometido.
+
+**Exemplos:**
+
+* Upload para servidores externos
+* Armazenamento em nuvem
+* DNS Tunneling
+
+---
+
+## 17. Impact
+
+Ações que afetam a disponibilidade, integridade ou confidencialidade dos dados.
+
+**Exemplos:**
+
+* Ransomware
+* Destruição de dados
+* Sabotagem de sistemas
+
+---
+
+## 18. Objectives
+
+Objetivos finais do adversário.
+
+**Exemplos:**
+
+* Roubo de dados
+* Espionagem
+* Ganho financeiro
+* Sabotagem
+* Persistência de longo prazo
+
+---
+
+# Importância para Blue Team
+
+A Unified Kill Chain permite que equipes de defesa:
+
+* Identifiquem atividades maliciosas em diferentes estágios do ataque.
+* Implementem controles preventivos e detectivos.
+* Melhorem processos de Threat Hunting.
+* Realizem análises de incidentes mais completas.
+* Compreendam o comportamento dos adversários de forma mais realista.
+
+O principal objetivo de um Blue Team não é apenas detectar o ataque, mas interromper a Kill Chain antes que o atacante alcance seus objetivos finais.
