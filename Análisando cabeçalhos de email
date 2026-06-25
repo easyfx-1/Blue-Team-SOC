@@ -1,0 +1,471 @@
+# Análise de Cabeçalhos de E-mail (Email Header Analysis)
+
+## Introdução
+
+A análise de cabeçalhos de e-mail é uma das habilidades mais importantes para profissionais de SOC, Blue Team, Threat Intelligence, DFIR (Digital Forensics and Incident Response) e analistas de phishing.
+
+Embora o usuário visualize apenas o remetente, assunto e corpo da mensagem, cada e-mail contém uma grande quantidade de metadados que permitem rastrear sua origem, validar sua autenticidade e identificar possíveis tentativas de fraude.
+
+O cabeçalho (Header) funciona como o histórico completo de entrega da mensagem.
+
+---
+
+# Estrutura de um E-mail
+
+Um e-mail é composto por duas partes principais:
+
+```text
+Email
+├── Header (Cabeçalho)
+└── Body (Corpo da Mensagem)
+```
+
+## Header
+
+Contém informações técnicas:
+
+* Remetente
+* Destinatário
+* Data e horário
+* Servidores envolvidos
+* Endereço IP de origem
+* SPF
+* DKIM
+* DMARC
+* Message-ID
+* Return-Path
+
+## Body
+
+Contém:
+
+* Texto
+* HTML
+* Imagens
+* Links
+* Anexos
+
+---
+
+# Como Visualizar o Cabeçalho
+
+## Gmail
+
+1. Abrir o e-mail
+2. Clicar nos três pontos (⋮)
+3. Selecionar **Mostrar original**
+
+## Outlook
+
+1. Abrir a mensagem
+2. Arquivo
+3. Propriedades
+4. Internet Headers
+
+## Thunderbird
+
+Atalho:
+
+```text
+Ctrl + U
+```
+
+---
+
+# Principais Campos do Cabeçalho
+
+## From
+
+Indica quem aparentemente enviou o e-mail.
+
+Exemplo:
+
+```text
+From: suporte@empresa.com
+```
+
+Atenção:
+
+O campo From pode ser falsificado.
+
+Nunca confie apenas nele.
+
+---
+
+## To
+
+Destinatário da mensagem.
+
+```text
+To: usuario@empresa.com
+```
+
+---
+
+## Reply-To
+
+Define para onde as respostas serão enviadas.
+
+Exemplo suspeito:
+
+```text
+From: banco@empresa.com
+
+Reply-To: golpista@gmail.com
+```
+
+Nesse caso o usuário acredita estar respondendo ao banco, mas a resposta será enviada para outra pessoa.
+
+---
+
+## Subject
+
+Assunto da mensagem.
+
+Exemplo:
+
+```text
+Subject: Atualização urgente da conta
+```
+
+Phishings normalmente exploram:
+
+* Urgência
+* Medo
+* Curiosidade
+* Autoridade
+
+---
+
+## Date
+
+Data e horário do envio.
+
+```text
+Date: Thu, 25 Jun 2026 15:48:37 +0000
+```
+
+Importante para criação de timelines durante investigações.
+
+---
+
+# Received: O Campo Mais Importante
+
+Cada servidor que processa a mensagem adiciona um novo campo:
+
+```text
+Received:
+```
+
+Exemplo:
+
+```text
+Received: from mail.exemplo.com
+Received: from smtp.exemplo.com
+Received: from 185.10.20.30
+```
+
+Essas linhas mostram o caminho percorrido pelo e-mail.
+
+A leitura deve ser feita de baixo para cima.
+
+O Received mais próximo da parte inferior normalmente contém a origem da mensagem.
+
+---
+
+# Return-Path
+
+Indica o endereço real utilizado para envio e tratamento de erros.
+
+Exemplo:
+
+```text
+Return-Path:
+```
+
+Muitas vezes é diferente do campo From.
+
+Essa diferença pode indicar:
+
+* Plataformas de marketing
+* Sistemas de recrutamento
+* Possível phishing
+
+O contexto é importante.
+
+---
+
+# Message-ID
+
+Identificador único da mensagem.
+
+Exemplo:
+
+```text
+Message-ID:
+```
+
+Permite:
+
+* Correlação de eventos
+* Rastreamento
+* Investigação de campanhas
+
+---
+
+# SPF
+
+(Sender Policy Framework)
+
+Valida se o servidor que enviou a mensagem possui autorização para enviar e-mails em nome do domínio.
+
+Resultado esperado:
+
+```text
+spf=pass
+```
+
+Possíveis resultados:
+
+```text
+spf=pass
+spf=fail
+spf=softfail
+spf=neutral
+```
+
+Falhas podem indicar spoofing.
+
+---
+
+# DKIM
+
+(DomainKeys Identified Mail)
+
+Utiliza assinatura criptográfica para garantir que o conteúdo não foi alterado.
+
+Resultado esperado:
+
+```text
+dkim=pass
+```
+
+Falha:
+
+```text
+dkim=fail
+```
+
+Pode indicar adulteração ou falsificação.
+
+---
+
+# DMARC
+
+(Domain-based Message Authentication, Reporting and Conformance)
+
+Utiliza SPF e DKIM para validar a identidade do domínio.
+
+Resultado esperado:
+
+```text
+dmarc=pass
+```
+
+Falha:
+
+```text
+dmarc=fail
+```
+
+É um forte indicador de fraude.
+
+---
+
+# Processo de Análise
+
+Ao receber um e-mail suspeito:
+
+## 1. Verificar o From
+
+O domínio faz sentido?
+
+---
+
+## 2. Verificar o Reply-To
+
+Existe diferença entre From e Reply-To?
+
+---
+
+## 3. Verificar SPF
+
+```text
+spf=pass
+```
+
+ou
+
+```text
+spf=fail
+```
+
+---
+
+## 4. Verificar DKIM
+
+```text
+dkim=pass
+```
+
+ou
+
+```text
+dkim=fail
+```
+
+---
+
+## 5. Verificar DMARC
+
+```text
+dmarc=pass
+```
+
+ou
+
+```text
+dmarc=fail
+```
+
+---
+
+## 6. Analisar Received
+
+Identificar:
+
+* Origem
+* Rota
+* IPs envolvidos
+
+---
+
+## 7. Analisar Links
+
+Verificar se os links apontam para domínios legítimos.
+
+---
+
+# Ferramentas Úteis
+
+## Gmail Show Original
+
+Visualização rápida de:
+
+* SPF
+* DKIM
+* DMARC
+
+---
+
+## VirusTotal
+
+Permite verificar:
+
+* URLs
+* Domínios
+* IPs
+* Hashes
+
+Muito útil para investigação inicial.
+
+---
+
+## AbuseIPDB
+
+Permite consultar a reputação de IPs.
+
+Ideal para verificar IPs encontrados nos campos Received.
+
+---
+
+## WHOIS
+
+Permite identificar:
+
+* Proprietário do domínio
+* Datas de registro
+* Informações públicas
+
+---
+
+## MXToolbox
+
+Excelente para:
+
+* SPF
+* DKIM
+* DMARC
+* MX Records
+* Reputação de domínio
+
+---
+
+## URLScan
+
+Permite analisar sites suspeitos sem acessá-los diretamente.
+
+---
+
+## Any.Run
+
+Sandbox interativa para análise de arquivos e URLs.
+
+---
+
+## Hybrid Analysis
+
+Sandbox para análise de malware e comportamento.
+
+---
+
+# Indicadores Comuns de Phishing
+
+* SPF Fail
+* DKIM Fail
+* DMARC Fail
+* Reply-To diferente do remetente
+* Domínios parecidos com marcas legítimas
+* Links encurtados
+* Erros gramaticais
+* Solicitações urgentes
+* Anexos inesperados
+
+---
+
+# Mentalidade de um Analista
+
+O usuário vê:
+
+```text
+Olá, clique aqui para atualizar sua conta.
+```
+
+O analista vê:
+
+```text
+From
+Reply-To
+Received
+Return-Path
+SPF
+DKIM
+DMARC
+Message-ID
+```
+
+O corpo da mensagem pode mentir.
+
+Os metadados normalmente contam a verdadeira história.
+
+Por isso a análise de cabeçalhos é uma das primeiras etapas de qualquer investigação de phishing profissional.
