@@ -1,0 +1,460 @@
+# Email Security & Phishing Analysis
+
+## Introdução
+
+O e-mail continua sendo um dos principais vetores de ataque utilizados por criminosos cibernéticos. Grande parte das invasões modernas não começa explorando vulnerabilidades técnicas, mas sim explorando o comportamento humano através de técnicas de Engenharia Social.
+
+Por esse motivo, a análise de e-mails é uma habilidade fundamental para profissionais de Blue Team, SOC, DFIR e Threat Hunting.
+
+Este documento reúne os principais conceitos estudados durante o processo de aprendizagem sobre análise de e-mails, autenticação, phishing e investigação de mensagens maliciosas.
+
+---
+
+# Funcionamento do E-mail
+
+Toda mensagem de e-mail é composta por dois elementos principais:
+
+* **Header (Cabeçalho)**
+* **Body (Corpo da Mensagem)**
+
+Enquanto o usuário normalmente enxerga apenas o corpo da mensagem, o cabeçalho contém diversas informações técnicas extremamente úteis durante uma investigação.
+
+---
+
+# Estrutura de um Endereço de E-mail
+
+Um endereço possui três componentes principais:
+
+```
+usuario@dominio.com
+```
+
+**Username**
+
+Identifica a caixa postal do usuário.
+
+```
+rafael
+```
+
+**@**
+
+Separador entre usuário e domínio.
+
+**Domínio**
+
+Responsável por receber e encaminhar a mensagem.
+
+```
+empresa.com
+```
+
+---
+
+# Protocolos de E-mail
+
+## SMTP (Simple Mail Transfer Protocol)
+
+Responsável pelo envio das mensagens.
+
+Fluxo:
+
+```
+Cliente → Servidor SMTP → Internet
+```
+
+---
+
+## POP3
+
+Baixa os e-mails para um único dispositivo.
+
+Características:
+
+* armazenamento local
+* normalmente remove do servidor
+* ideal para apenas um computador
+
+---
+
+## IMAP
+
+Mantém os e-mails armazenados no servidor.
+
+Características:
+
+* sincronização entre dispositivos
+* mesma caixa de entrada em todos os equipamentos
+* utilizado pela maioria dos provedores atuais
+
+---
+
+# Jornada de um E-mail
+
+Fluxo simplificado:
+
+```
+Usuário
+      │
+      ▼
+Cliente de Email
+      │ SMTP
+      ▼
+Servidor de Email
+      │
+      ▼
+DNS consulta o servidor MX
+      │
+      ▼
+Servidor do destinatário
+      │
+      ▼
+POP3 ou IMAP
+      │
+      ▼
+Destinatário
+```
+
+---
+
+# Estrutura de um Cabeçalho
+
+Os campos mais importantes durante uma investigação são:
+
+```
+From
+```
+
+Remetente informado.
+
+---
+
+```
+Reply-To
+```
+
+Endereço que receberá as respostas.
+
+Muitas campanhas de phishing utilizam um Reply-To diferente do From.
+
+---
+
+```
+To
+```
+
+Destinatário.
+
+---
+
+```
+Subject
+```
+
+Assunto da mensagem.
+
+---
+
+```
+Date
+```
+
+Data e horário de envio.
+
+---
+
+```
+Received
+```
+
+Talvez o campo mais importante.
+
+Cada servidor por onde o e-mail passou adiciona uma nova linha Received.
+
+A leitura deve ser feita de **baixo para cima**, pois a última linha representa a origem da mensagem.
+
+---
+
+# SPF, DKIM e DMARC
+
+Esses mecanismos ajudam a validar a autenticidade do remetente.
+
+## SPF
+
+Define quais servidores estão autorizados a enviar e-mails em nome do domínio.
+
+Resultado esperado:
+
+```
+spf=pass
+```
+
+---
+
+## DKIM
+
+Assina digitalmente a mensagem.
+
+Garante que ela não foi alterada durante o transporte.
+
+Resultado esperado:
+
+```
+dkim=pass
+```
+
+---
+
+## DMARC
+
+Define como o domínio tratará mensagens que falharem nas validações SPF e DKIM.
+
+Pode operar em três modos:
+
+```
+none
+quarantine
+reject
+```
+
+Quanto mais rígida a política, maior a proteção contra spoofing.
+
+---
+
+# Corpo do E-mail
+
+O corpo pode estar em:
+
+* Texto puro
+* HTML
+
+Mensagens HTML permitem:
+
+* imagens
+* botões
+* links
+* CSS
+* logos
+* layouts idênticos aos de empresas legítimas
+
+Isso torna ataques de phishing muito mais convincentes.
+
+---
+
+# Visualização da Fonte
+
+Ao visualizar a origem da mensagem é possível analisar:
+
+* HTML bruto
+* URLs reais
+* imagens incorporadas
+* anexos
+* cabeçalhos MIME
+* codificação Base64
+
+No Thunderbird:
+
+```
+Ctrl + U
+```
+
+No Gmail:
+
+```
+Mostrar Original
+```
+
+---
+
+# Análise de Anexos
+
+Os anexos aparecem normalmente com:
+
+```
+Content-Type
+```
+
+Exemplo:
+
+```
+application/pdf
+```
+
+ou
+
+```
+application/msword
+```
+
+---
+
+Também aparecem:
+
+```
+Content-Disposition
+```
+
+Indica que existe um anexo.
+
+---
+
+```
+Content-Transfer-Encoding
+```
+
+Frequentemente:
+
+```
+base64
+```
+
+A sequência Base64 pode ser decodificada para reconstruir o arquivo original utilizando ferramentas como:
+
+* CyberChef
+* Base64 Decoder
+
+---
+
+# Tipos de Ataques por E-mail
+
+## Spam
+
+Mensagens enviadas em massa.
+
+---
+
+## Malspam
+
+Spam contendo malware.
+
+---
+
+## Phishing
+
+Imita uma empresa legítima para roubar informações.
+
+---
+
+## Spear Phishing
+
+Ataque personalizado contra uma pessoa específica.
+
+---
+
+## Whaling
+
+Phishing direcionado a executivos.
+
+---
+
+## Smishing
+
+Phishing via SMS.
+
+---
+
+## Vishing
+
+Phishing realizado por chamadas telefônicas.
+
+---
+
+# Indicadores de Phishing
+
+Durante uma investigação procure:
+
+✔ domínio semelhante ao legítimo
+
+✔ urgência exagerada
+
+✔ erros de escrita
+
+✔ links encurtados
+
+✔ anexos inesperados
+
+✔ remetente suspeito
+
+✔ Reply-To diferente
+
+✔ pedido de credenciais
+
+✔ arquivos executáveis disfarçados
+
+---
+
+# Defanging
+
+Nunca compartilhe IOCs clicáveis.
+
+Exemplo:
+
+Original
+
+```
+http://malicious-site.com
+```
+
+Defanged
+
+```
+hxxp://malicious-site[.]com
+```
+
+Isso reduz o risco de acessos acidentais durante análises.
+
+---
+
+# Ferramentas Úteis
+
+Análise de cabeçalhos
+
+* MXToolbox Header Analyzer
+* Google Admin Toolbox Message Header
+
+Investigação de IOCs
+
+* VirusTotal
+* URLScan.io
+* AbuseIPDB
+* AlienVault OTX
+* Cisco Talos Intelligence
+
+Extração e análise
+
+* CyberChef
+* Thunderbird
+* Sublime Text
+* Visual Studio Code
+
+Sandbox
+
+* ANY.RUN
+* Hybrid Analysis
+* Joe Sandbox
+
+---
+
+# Fluxo Profissional de Investigação
+
+Um analista SOC normalmente segue um processo semelhante:
+
+1. Abrir o arquivo `.eml`
+2. Ler os cabeçalhos
+3. Validar SPF, DKIM e DMARC
+4. Identificar o IP de origem através dos campos `Received`
+5. Consultar IPs, domínios e hashes em plataformas de inteligência
+6. Extrair e analisar URLs
+7. Realizar o defang dos IOCs antes de compartilhá-los
+8. Analisar anexos e reconstruí-los quando necessário
+9. Verificar indicadores de comprometimento (IOCs)
+10. Classificar o e-mail como legítimo, spam, phishing ou malspam
+11. Documentar as evidências e recomendar ações de contenção
+
+---
+
+# Conclusão
+
+A análise de e-mails vai muito além de identificar mensagens falsas. Ela permite reconstruir o caminho percorrido pela mensagem, validar sua autenticidade, identificar indicadores de comprometimento e compreender as técnicas utilizadas pelo atacante.
+
+Dominar cabeçalhos, autenticação (SPF, DKIM e DMARC), análise de anexos, inspeção de URLs e investigação de IOCs é uma competência essencial para profissionais de Blue Team, SOC, DFIR e Threat Hunting, sendo frequentemente aplicada em ambientes corporativos para detectar campanhas de phishing, malware e comprometimentos de contas.
