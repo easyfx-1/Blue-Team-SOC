@@ -1,0 +1,186 @@
+# 🔍 Phishing: Diferença entre o Texto Exibido e o Link Real (HTML Hyperlink Deception)
+
+## 📖 Introdução
+
+Uma das técnicas mais utilizadas em campanhas de phishing consiste em exibir um texto que aparenta ser legítimo, enquanto o link real direciona a vítima para um site controlado pelo atacante.
+
+Essa técnica explora uma característica fundamental do HTML: **o texto exibido ao usuário e o destino do link são elementos independentes**.
+
+Por esse motivo, nunca devemos confiar apenas no que está visível em um e-mail ou página web.
+
+---
+
+# Como funciona
+
+Em HTML, um link é definido pela tag `<a>`.
+
+Sua estrutura básica é:
+
+```html
+<a href="DESTINO_REAL">Texto exibido ao usuário</a>
+```
+
+Observe que existem duas informações diferentes:
+
+- **Texto exibido** → O que o usuário enxerga.
+- **href** → O endereço real para onde o navegador será direcionado.
+
+Exemplo:
+
+```html
+<a href="http://site-malicioso.com/login">
+    https://www.paypal.com
+</a>
+```
+
+Visualmente o usuário verá:
+
+```
+https://www.paypal.com
+```
+
+Entretanto, ao clicar, será redirecionado para:
+
+```
+http://site-malicioso.com/login
+```
+
+O texto é apenas uma representação visual e não garante que o destino seja legítimo.
+
+---
+
+# Por que essa técnica funciona?
+
+Grande parte dos usuários verifica apenas:
+
+- O logotipo da empresa;
+- As cores do e-mail;
+- O texto do link.
+
+Poucos verificam o destino verdadeiro do hyperlink.
+
+Os atacantes exploram exatamente esse comportamento para aumentar a taxa de sucesso das campanhas de phishing.
+
+---
+
+# Exemplo Prático
+
+O usuário recebe um e-mail informando:
+
+> Sua conta PayPal foi utilizada para uma compra de R$ 2.500.
+
+No corpo do e-mail existe um botão:
+
+```
+Cancelar Compra
+```
+
+O botão parece legítimo, porém seu HTML pode ser:
+
+```html
+<a href="https://malicious-domain.com/login">
+    Cancelar Compra
+</a>
+```
+
+Ao clicar, a vítima é direcionada para uma página falsa que imita o PayPal e solicita credenciais de acesso.
+
+---
+
+# Técnicas frequentemente utilizadas em conjunto
+
+Essa técnica normalmente aparece acompanhada de outras estratégias de phishing, como:
+
+- Spoofing do remetente;
+- Engenharia Social;
+- HTML com identidade visual da empresa (Branded HTML);
+- Domínios semelhantes (Typosquatting);
+- Encurtadores de URL (URL Shorteners);
+- Redirecionamentos múltiplos.
+
+Quanto mais técnicas forem combinadas, maior a chance de convencer a vítima.
+
+---
+
+# Como identificar
+
+Durante a análise de um e-mail suspeito, o analista deve verificar:
+
+- O endereço real presente no atributo `href`;
+- Se o domínio pertence realmente à empresa;
+- Se existem redirecionamentos;
+- Se há uso de serviços de URL Shortener;
+- Se o domínio utiliza HTTPS válido;
+- Se existe discrepância entre o texto exibido e o destino do hyperlink.
+
+---
+
+# Exemplo de análise
+
+Texto apresentado ao usuário:
+
+```
+https://www.paypal.com
+```
+
+Destino real:
+
+```
+http://paypal-login-security.xyz/login
+```
+
+Embora o texto pareça legítimo, o domínio verdadeiro pertence ao atacante.
+
+---
+
+# Como verificar o destino de um link
+
+## Em navegadores
+
+Passe o cursor do mouse sobre o link sem clicar.
+
+O navegador normalmente exibirá o endereço real na parte inferior da janela.
+
+---
+
+## Em análises de Blue Team
+
+O analista pode:
+
+- Inspecionar o código HTML do e-mail;
+- Visualizar o código-fonte (Raw Source);
+- Examinar o atributo `href`;
+- Expandir URLs encurtadas em ambiente seguro;
+- Verificar reputação do domínio utilizando ferramentas de Threat Intelligence.
+
+---
+
+# Indicadores de Comprometimento (IOCs)
+
+Alguns sinais comuns incluem:
+
+- Texto exibido diferente do destino real;
+- Uso de domínios desconhecidos;
+- URLs encurtadas;
+- Uso excessivo de urgência;
+- Botões incentivando ações imediatas;
+- Identidade visual copiada de empresas conhecidas.
+
+---
+
+# Boas práticas para Blue Team
+
+- Nunca confiar apenas no texto exibido.
+- Sempre validar o domínio de destino.
+- Analisar o código HTML quando possível.
+- Investigar redirecionamentos antes de acessar um link.
+- Orientar usuários sobre a diferença entre texto exibido e hyperlink.
+- Utilizar sandbox para abrir links suspeitos quando necessário.
+
+---
+
+# Conclusão
+
+A diferença entre o texto apresentado ao usuário e o endereço real do hyperlink é uma das técnicas mais comuns em campanhas de phishing. Como o HTML permite que qualquer texto seja associado a qualquer URL, os atacantes exploram essa funcionalidade para induzir vítimas a acessar páginas falsas e fornecer informações sensíveis.
+
+Durante uma investigação de phishing, um analista de Blue Team deve sempre validar o atributo `href` dos links presentes no e-mail, pois ele representa o destino real da navegação e pode revelar o comprometimento mesmo quando a mensagem aparenta ser legítima.
