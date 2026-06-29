@@ -1,0 +1,213 @@
+# 🛠️ Email Analysis Tools
+
+## Introdução
+
+Durante uma investigação de phishing, um analista de Blue Team ou SOC utiliza diversas ferramentas para coletar artefatos, validar indicadores de comprometimento (IOCs) e identificar a infraestrutura utilizada por um possível atacante.
+
+Essas ferramentas permitem analisar cabeçalhos de e-mail, reputação de IPs, URLs, domínios e certificados digitais sem a necessidade de realizar toda a investigação manualmente.
+
+---
+
+# Google Messageheader
+
+## Objetivo
+
+O **Google Messageheader** (Google Admin Toolbox) automatiza a análise de cabeçalhos SMTP.
+
+Ao colar o cabeçalho completo de um e-mail, a ferramenta interpreta automaticamente as informações e apresenta uma visão organizada da mensagem.
+
+## Informações obtidas
+
+* Endereço IP de origem
+* Caminho percorrido pelo e-mail
+* Resultado do SPF
+* Resultado do DKIM
+* Resultado do DMARC
+* Data e horário de envio
+* Servidores SMTP envolvidos
+
+## Quando utilizar
+
+* Investigação de phishing
+* Validação de autenticação do e-mail
+* Identificação de spoofing
+* Rastreamento da origem da mensagem
+
+---
+
+# Message Header Analyzer
+
+## Objetivo
+
+Ferramenta utilizada para interpretar automaticamente os cabeçalhos SMTP.
+
+Assim como o Messageheader, facilita a identificação de informações importantes presentes no Header sem a necessidade de analisar dezenas de linhas manualmente.
+
+## Informações apresentadas
+
+* IP de origem
+* Servidores de e-mail
+* Saltos SMTP
+* Informações de autenticação
+* Possíveis inconsistências
+
+---
+
+# IPinfo
+
+## Objetivo
+
+Consultar informações públicas sobre um endereço IP.
+
+## Informações fornecidas
+
+* País
+* Cidade
+* ASN (Autonomous System Number)
+* Organização responsável
+* ISP
+* Hostname
+
+## Casos de uso
+
+* Descobrir a origem de um IP
+* Identificar provedores utilizados por atacantes
+* Auxiliar na investigação de campanhas de phishing
+
+---
+
+# URLScan.io
+
+## Objetivo
+
+Analisar websites de forma segura utilizando um ambiente isolado (sandbox).
+
+O URLScan visita a página em nome do analista e registra todas as atividades realizadas pelo site.
+
+## Informações coletadas
+
+* Screenshot da página
+* Código HTML
+* Scripts carregados
+* Redirecionamentos
+* Recursos externos
+* Certificados TLS
+* Cookies
+* Domínios contatados
+* Endereços IP envolvidos
+
+## Vantagens
+
+* Evita acessar diretamente sites suspeitos.
+* Permite observar o comportamento da página.
+* Identifica redirecionamentos ocultos.
+* Facilita a descoberta de infraestrutura maliciosa.
+
+---
+
+# Cisco Talos Reputation Center
+
+## Objetivo
+
+Consultar a reputação de indicadores utilizando a inteligência de ameaças da Cisco.
+
+## Pode analisar
+
+* Endereços IP
+* Domínios
+* Redes (ASN)
+
+## Informações apresentadas
+
+* Reputação
+* Categoria do domínio
+* Histórico de atividade
+* Classificação de segurança
+* Associação com campanhas maliciosas
+
+---
+
+# Google Safe Browsing
+
+## Objetivo
+
+Verificar se um domínio ou URL foi identificado pelo Google como:
+
+* Phishing
+* Malware
+* Engenharia social
+* Conteúdo malicioso
+
+Caso o endereço seja considerado perigoso, navegadores como Google Chrome exibem alertas ao usuário antes do acesso.
+
+---
+
+# Análise de Certificados TLS
+
+Durante a investigação também é importante validar o certificado HTTPS utilizado pelo site.
+
+Alguns pontos que devem ser observados:
+
+* Autoridade Certificadora (CA)
+* Data de emissão
+* Data de expiração
+* Algoritmo utilizado
+* Domínio protegido
+
+Autoridades Certificadoras conhecidas, como DigiCert, GlobalSign e Let's Encrypt, costumam indicar uma infraestrutura legítima, embora isso não seja garantia absoluta de segurança.
+
+---
+
+# Fluxo de Investigação
+
+```text
+Receber e-mail suspeito
+        │
+        ▼
+Extrair o Header
+        │
+        ▼
+Google Messageheader
+        │
+        ▼
+Identificar IP de origem
+        │
+        ▼
+Consultar IPinfo
+        │
+        ▼
+Extrair URLs
+        │
+        ▼
+Analisar no URLScan.io
+        │
+        ▼
+Consultar reputação no Cisco Talos
+        │
+        ▼
+Verificar Google Safe Browsing
+        │
+        ▼
+Correlacionar todos os artefatos
+        │
+        ▼
+Determinar se o e-mail é legítimo ou phishing
+```
+
+---
+
+# Boas Práticas
+
+* Nunca confiar apenas no nome exibido do remetente.
+* Validar o domínio e o endereço IP de origem.
+* Expandir URLs encurtadas antes de acessá-las.
+* Analisar links suspeitos em sandbox.
+* Consultar a reputação de IPs e domínios.
+* Verificar certificados TLS.
+* Correlacionar múltiplos indicadores antes de concluir uma investigação.
+
+---
+
+# Conclusão
+
+As ferramentas apresentadas são amplamente utilizadas por analistas de Blue Team e SOC para acelerar investigações de phishing e reduzir o tempo de resposta a incidentes. A combinação entre análise de cabeçalhos, reputação de IPs, inspeção de URLs e validação de certificados permite identificar rapidamente campanhas maliciosas e proteger os usuários contra ameaças baseadas em e-mail.
