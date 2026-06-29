@@ -1,0 +1,296 @@
+# 📧 Email Phishing Analysis: Coleta de Artefatos (Email Artifact Collection)
+
+## Introdução
+
+A análise de e-mails suspeitos é uma das atividades mais comuns realizadas por analistas de **Blue Team** e **Security Operations Center (SOC)**. Antes de classificar uma mensagem como legítima ou maliciosa, é fundamental coletar evidências (artifacts) que permitam validar sua origem, identificar indicadores de comprometimento (IOCs) e correlacionar informações com plataformas de Threat Intelligence.
+
+O objetivo da coleta de artefatos é reunir informações suficientes para determinar:
+
+* A origem do e-mail;
+* A identidade do remetente;
+* O destino dos hyperlinks;
+* A presença de anexos maliciosos;
+* A infraestrutura utilizada pelo atacante.
+
+---
+
+# O que são Artifacts?
+
+Em cibersegurança, **artifacts** são informações extraídas de um incidente que podem ser utilizadas durante uma investigação.
+
+No contexto de e-mails, alguns exemplos incluem:
+
+* Endereço do remetente;
+* Endereço IP de origem;
+* Assunto do e-mail;
+* Links e URLs;
+* Anexos;
+* Hashes de arquivos;
+* Cabeçalhos SMTP.
+
+Esses dados podem ser utilizados para consultas em plataformas de Threat Intelligence, SIEMs, sandboxes e ferramentas OSINT.
+
+---
+
+# Header Analysis (Análise do Cabeçalho)
+
+O cabeçalho (Header) contém informações técnicas sobre o envio e roteamento da mensagem. Frequentemente, ele revela muito mais do que o próprio corpo do e-mail.
+
+## 1. Sender Email Address
+
+O primeiro artefato analisado é o endereço do remetente.
+
+Exemplo:
+
+```
+From: support@company.com
+```
+
+Durante a investigação, o analista deve verificar:
+
+* O domínio pertence realmente à organização?
+* Existe spoofing do remetente?
+* O domínio possui boa reputação?
+
+Apenas o nome exibido não é suficiente para validar a autenticidade do e-mail.
+
+---
+
+## 2. Sender IP Address
+
+Todo e-mail contém um endereço IP responsável pelo envio da mensagem.
+
+Esse IP pode ser utilizado para descobrir:
+
+* País de origem;
+* Provedor de hospedagem;
+* ASN;
+* Organização proprietária;
+* Histórico de atividades maliciosas.
+
+Ferramentas úteis:
+
+* VirusTotal
+* AbuseIPDB
+* Cisco Talos Intelligence
+* AlienVault OTX
+
+---
+
+## 3. Subject Line
+
+O assunto do e-mail deve ser analisado quanto à presença de técnicas de Engenharia Social.
+
+Alguns exemplos comuns:
+
+* Pagamento pendente
+* Sua conta será bloqueada
+* Atualização obrigatória
+* Compra realizada
+* Fatura vencida
+
+Mensagens que induzem urgência costumam aumentar significativamente a taxa de sucesso de campanhas de phishing.
+
+---
+
+## 4. Recipient Information
+
+Identificar quem recebeu a mensagem também faz parte da investigação.
+
+Os campos analisados são:
+
+* To
+* CC
+* BCC
+
+Essas informações ajudam a identificar:
+
+* Campanhas direcionadas;
+* Ataques em massa;
+* Destinatários específicos.
+
+---
+
+## 5. Reply-To
+
+O campo **Reply-To** define para onde as respostas do usuário serão enviadas.
+
+Exemplo:
+
+```
+From:
+support@paypal.com
+
+Reply-To:
+attacker@email.com
+```
+
+Mesmo que o remetente aparente ser legítimo, respostas poderão ser encaminhadas diretamente ao atacante.
+
+Diferenças entre os campos **From** e **Reply-To** representam um forte indicador de phishing.
+
+---
+
+## 6. Date and Time
+
+Registrar a data e o horário do envio permite:
+
+* Construir uma timeline do incidente;
+* Correlacionar eventos;
+* Identificar campanhas simultâneas;
+* Comparar múltiplos e-mails semelhantes.
+
+---
+
+# Body Analysis (Análise do Corpo do E-mail)
+
+Após a inspeção do cabeçalho, o analista passa para o conteúdo da mensagem.
+
+---
+
+## URLs e Hyperlinks
+
+Todos os links presentes devem ser identificados.
+
+Durante a investigação recomenda-se:
+
+* Expandir URLs encurtadas;
+* Identificar redirecionamentos;
+* Verificar o domínio real;
+* Validar reputação do endereço;
+* Procurar páginas falsas de autenticação.
+
+Nunca confiar apenas no texto exibido pelo hyperlink.
+
+O atributo `href` representa o destino verdadeiro da navegação.
+
+---
+
+## Attachment Names
+
+Analisar os nomes dos anexos pode revelar tentativas de mascarar arquivos maliciosos.
+
+Exemplos suspeitos:
+
+```
+Invoice.pdf.exe
+
+Resume.doc.exe
+
+Photo.jpg.exe
+```
+
+É comum atacantes utilizarem múltiplas extensões para induzir o usuário a acreditar que o arquivo é um documento legítimo.
+
+---
+
+## Attachment Hash
+
+Sempre que possível, o anexo deve ser submetido ao cálculo de hash.
+
+Os algoritmos mais utilizados são:
+
+* MD5
+* SHA1
+* SHA256
+
+O hash funciona como uma impressão digital única do arquivo.
+
+Ele pode ser pesquisado em plataformas como:
+
+* VirusTotal
+* Hybrid Analysis
+* AlienVault OTX
+* MalwareBazaar
+
+Essa consulta permite identificar rapidamente se o arquivo já foi associado a campanhas maliciosas.
+
+---
+
+# Fluxo de Investigação
+
+Uma investigação típica segue as seguintes etapas:
+
+```
+Recebimento do e-mail
+          │
+          ▼
+Análise do Header
+          │
+          ▼
+Coleta dos Artefatos
+          │
+          ▼
+Verificação do Remetente
+          │
+          ▼
+Análise do IP de Origem
+          │
+          ▼
+Análise dos Hyperlinks
+          │
+          ▼
+Análise dos Anexos
+          │
+          ▼
+Geração de Hash
+          │
+          ▼
+Consulta em Threat Intelligence
+          │
+          ▼
+Classificação do Incidente
+```
+
+---
+
+# Ferramentas Utilizadas
+
+Durante a investigação, algumas ferramentas são frequentemente utilizadas:
+
+| Ferramenta     | Finalidade                                    |
+| -------------- | --------------------------------------------- |
+| VirusTotal     | Verificação de URLs, arquivos e hashes        |
+| AbuseIPDB      | Reputação de endereços IP                     |
+| Cisco Talos    | Inteligência sobre IPs e domínios             |
+| AlienVault OTX | Indicadores de Comprometimento (IOCs)         |
+| URLScan.io     | Análise de páginas e redirecionamentos        |
+| MXToolbox      | Validação de SPF, DKIM, DMARC e registros DNS |
+
+---
+
+# Indicadores de Comprometimento (IOCs)
+
+Durante a análise de e-mails suspeitos, alguns indicadores comuns incluem:
+
+* Domínio diferente do esperado;
+* Remetente falsificado (Spoofing);
+* Campo Reply-To divergente;
+* URLs encurtadas;
+* Domínios recém-registrados;
+* Uso excessivo de urgência;
+* Hyperlinks mascarados;
+* Anexos executáveis;
+* Arquivos Office com macros;
+* Hashes conhecidos como maliciosos.
+
+---
+
+# Boas Práticas para Analistas Blue Team
+
+* Nunca confiar apenas no nome exibido do remetente.
+* Validar sempre o domínio de origem.
+* Consultar a reputação do IP.
+* Verificar discrepâncias entre From e Reply-To.
+* Expandir URLs encurtadas antes de acessá-las.
+* Calcular hashes de anexos suspeitos.
+* Correlacionar artefatos com plataformas de Threat Intelligence.
+* Registrar todos os IOCs encontrados durante a investigação.
+
+---
+
+# Conclusão
+
+A coleta de artefatos é uma das etapas mais importantes da análise de phishing. Antes mesmo de abrir um anexo ou acessar um hyperlink, um analista pode identificar diversos sinais de comprometimento apenas examinando cuidadosamente o cabeçalho e o corpo da mensagem.
+
+A combinação de informações como remetente, IP de origem, URLs, anexos e hashes fornece uma visão abrangente do incidente e permite confirmar rapidamente se o e-mail faz parte de uma campanha maliciosa, reduzindo o risco para a organização e acelerando o processo de resposta a incidentes.
