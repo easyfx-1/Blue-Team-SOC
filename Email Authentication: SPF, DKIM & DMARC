@@ -1,0 +1,306 @@
+# Autenticação de E-mails com SPF, DKIM e DMARC
+
+## Introdução
+
+A autenticação de e-mails é uma das principais camadas de defesa contra ataques de phishing, spoofing e outras fraudes que utilizam domínios falsificados. Para isso, existem três mecanismos fundamentais:
+
+- **SPF (Sender Policy Framework)**
+- **DKIM (DomainKeys Identified Mail)**
+- **DMARC (Domain-based Message Authentication, Reporting and Conformance)**
+
+Esses mecanismos trabalham em conjunto para verificar se um e-mail realmente foi enviado por um servidor autorizado pelo domínio do remetente.
+
+---
+
+# SPF (Sender Policy Framework)
+
+## O que é?
+
+O SPF é um mecanismo de autenticação baseado em DNS que informa quais servidores possuem autorização para enviar e-mails em nome de um domínio.
+
+Quando um servidor recebe uma mensagem, ele consulta o registro SPF do domínio do remetente e verifica se o endereço IP que enviou o e-mail está autorizado.
+
+---
+
+## Como funciona
+
+Fluxo simplificado:
+
+```
+Remetente
+      │
+      ▼
+Servidor envia o e-mail
+      │
+      ▼
+Servidor destinatário consulta o DNS
+      │
+      ▼
+Registro SPF do domínio
+      │
+      ▼
+O IP está autorizado?
+      │
+ ┌────┴────┐
+ │         │
+Sim       Não
+ │         │
+PASS     FAIL/SoftFail
+```
+
+---
+
+## Exemplo de registro SPF
+
+```
+v=spf1 ip4:192.168.1.10 include:_spf.google.com -all
+```
+
+### Explicação
+
+### `v=spf1`
+
+Define a versão do protocolo SPF.
+
+---
+
+### `ip4:192.168.1.10`
+
+Autoriza esse endereço IPv4 a enviar e-mails pelo domínio.
+
+---
+
+### `include:_spf.google.com`
+
+Autoriza todos os servidores que já estão autorizados pelo Google.
+
+Muito utilizado por empresas que utilizam Google Workspace.
+
+---
+
+### `-all`
+
+Determina que qualquer servidor não listado deve ser rejeitado.
+
+---
+
+# Resultados do SPF
+
+## PASS
+
+O servidor que enviou o e-mail está autorizado pelo domínio.
+
+```
+SPF: PASS
+```
+
+---
+
+## FAIL
+
+O servidor não está autorizado.
+
+Normalmente o e-mail é rejeitado.
+
+```
+SPF: FAIL
+```
+
+---
+
+## SoftFail
+
+O servidor não está autorizado, porém o domínio apenas recomenda marcar o e-mail como suspeito.
+
+```
+SPF: SoftFail
+```
+
+O e-mail normalmente continua sendo entregue.
+
+---
+
+## None
+
+O domínio não possui registro SPF.
+
+---
+
+## Neutral
+
+O domínio não informa se aquele servidor deve ou não ser considerado legítimo.
+
+---
+
+## TempError
+
+Erro temporário durante a consulta DNS.
+
+---
+
+## PermError
+
+Erro permanente na configuração do registro SPF.
+
+---
+
+# DKIM (DomainKeys Identified Mail)
+
+## O que é?
+
+O DKIM adiciona uma assinatura digital criptográfica ao e-mail.
+
+Essa assinatura garante que:
+
+- o conteúdo da mensagem não foi alterado;
+- o domínio realmente assinou aquele e-mail.
+
+Quando o servidor recebe a mensagem, ele consulta a chave pública publicada no DNS e valida a assinatura.
+
+### Resultado esperado
+
+```
+DKIM: PASS
+```
+
+Caso a assinatura esteja ausente ou inválida:
+
+```
+DKIM: FAIL
+```
+
+---
+
+# DMARC (Domain-based Message Authentication, Reporting and Conformance)
+
+## O que é?
+
+O DMARC utiliza os resultados do SPF e do DKIM para definir como o servidor destinatário deve tratar mensagens que falharem na autenticação.
+
+Além disso, permite que o proprietário do domínio receba relatórios sobre tentativas de falsificação.
+
+---
+
+## Políticas DMARC
+
+### p=none
+
+Modo de monitoramento.
+
+Os e-mails continuam sendo aceitos, porém são gerados relatórios.
+
+---
+
+### p=quarantine
+
+Mensagens suspeitas são enviadas para Spam ou Quarentena.
+
+---
+
+### p=reject
+
+Mensagens que falham na autenticação devem ser rejeitadas imediatamente.
+
+---
+
+# Exemplo de análise real
+
+Durante a análise de um cabeçalho de e-mail foi encontrado:
+
+```
+SPF: PASS
+
+DKIM: PASS
+
+DMARC: PASS
+```
+
+Além disso:
+
+```
+Received:
+
+o66.mailer.shopify.com
+
+159.183.218.12
+```
+
+O servidor de envio correspondia ao IP autorizado no registro SPF.
+
+O resultado indica que:
+
+- o servidor remetente é autorizado;
+- a assinatura digital é válida;
+- a política DMARC foi satisfeita.
+
+---
+
+# Atenção
+
+SPF, DKIM e DMARC **não garantem que um e-mail seja seguro**.
+
+Eles apenas verificam que o domínio foi autenticado corretamente.
+
+Ainda é necessário analisar:
+
+- assunto da mensagem;
+- engenharia social;
+- URLs;
+- anexos;
+- indicadores de comprometimento (IOCs).
+
+Uma empresa legítima pode ser comprometida e enviar e-mails maliciosos utilizando sua própria infraestrutura. Nesses casos, SPF, DKIM e DMARC continuarão retornando **PASS**.
+
+---
+
+# Ferramentas úteis
+
+## Google Admin Toolbox - Messageheader
+
+Permite analisar cabeçalhos completos de e-mails.
+
+Informações fornecidas:
+
+- SPF
+- DKIM
+- DMARC
+- Return-Path
+- Received
+- IP de origem
+- Rota percorrida pelo e-mail
+
+Ideal para investigações de phishing.
+
+---
+
+## Dmarcian SPF Surveyor
+
+Ferramenta utilizada para visualizar registros SPF.
+
+Permite:
+
+- visualizar servidores autorizados;
+- identificar erros de sintaxe;
+- analisar registros `include`;
+- compreender a estrutura do SPF de um domínio.
+
+---
+
+# Fluxo de análise recomendado
+
+1. Analisar o campo **From**.
+2. Verificar o **Return-Path**.
+3. Identificar o servidor remetente através dos campos **Received**.
+4. Validar o resultado do **SPF**.
+5. Verificar a assinatura **DKIM**.
+6. Confirmar o resultado do **DMARC**.
+7. Analisar URLs, anexos e o conteúdo da mensagem.
+8. Consultar IOCs em plataformas de Threat Intelligence, quando necessário.
+
+---
+
+# Conclusão
+
+SPF, DKIM e DMARC constituem a principal camada de autenticação de e-mails na Internet. Eles reduzem significativamente ataques de spoofing e phishing ao permitir que servidores de e-mail validem a identidade do domínio remetente.
+
+Entretanto, esses mecanismos autenticam apenas a origem da mensagem, não o seu conteúdo. Por isso, um processo de análise completo deve combinar autenticação, inspeção do corpo do e-mail, verificação de URLs, análise de anexos e consultas a serviços de inteligência de ameaças.
