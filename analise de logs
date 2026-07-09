@@ -1,0 +1,355 @@
+# 📄 Linux Log Analysis Cheat Sheet
+
+> Comandos essenciais para análise de logs em ambientes Linux.
+
+---
+
+# Visualização
+
+## Exibir todo o arquivo
+
+```bash
+cat arquivo.log
+```
+
+## Primeiras linhas
+
+```bash
+head arquivo.log
+```
+
+ou
+
+```bash
+head -n 20 arquivo.log
+```
+
+## Últimas linhas
+
+```bash
+tail arquivo.log
+```
+
+ou
+
+```bash
+tail -n 20 arquivo.log
+```
+
+## Acompanhar log em tempo real
+
+```bash
+tail -f arquivo.log
+```
+
+---
+
+# Pesquisa
+
+## Procurar uma palavra
+
+```bash
+grep "erro" arquivo.log
+```
+
+## Ignorar maiúsculas/minúsculas
+
+```bash
+grep -i "error" arquivo.log
+```
+
+## Mostrar número da linha
+
+```bash
+grep -n "login" arquivo.log
+```
+
+## Procurar várias palavras
+
+```bash
+grep -E "POST|GET|DELETE" arquivo.log
+```
+
+## Excluir resultados
+
+```bash
+grep -v "200" arquivo.log
+```
+
+## Contar ocorrências
+
+```bash
+grep -c "404" arquivo.log
+```
+
+---
+
+# Colunas (cut)
+
+## Primeiro campo
+
+```bash
+cut -d " " -f1 arquivo.log
+```
+
+## Primeiro e segundo campo
+
+```bash
+cut -d " " -f1,2 arquivo.log
+```
+
+## Campos específicos
+
+```bash
+cut -d " " -f4,7 arquivo.log
+```
+
+> `-d` = delimitador
+>
+> `-f` = campo
+
+---
+
+# Ordenação
+
+## Ordenar
+
+```bash
+sort arquivo.log
+```
+
+## Ordem numérica
+
+```bash
+sort -n arquivo.log
+```
+
+## Ordem reversa
+
+```bash
+sort -r arquivo.log
+```
+
+---
+
+# Remover duplicados
+
+## Valores únicos
+
+```bash
+sort arquivo.log | uniq
+```
+
+## Contar ocorrências
+
+```bash
+sort arquivo.log | uniq -c
+```
+
+---
+
+# Contagem
+
+## Número de linhas
+
+```bash
+wc -l arquivo.log
+```
+
+## Número de palavras
+
+```bash
+wc -w arquivo.log
+```
+
+## Número de caracteres
+
+```bash
+wc -c arquivo.log
+```
+
+---
+
+# Estatísticas rápidas
+
+## IPs únicos
+
+```bash
+cut -d " " -f1 arquivo.log | sort | uniq
+```
+
+## Contar IPs
+
+```bash
+cut -d " " -f1 arquivo.log | sort | uniq -c
+```
+
+## IP mais frequente
+
+```bash
+cut -d " " -f1 arquivo.log | sort | uniq -c | sort -nr | head -1
+```
+
+## URLs mais acessadas
+
+```bash
+cut -d " " -f7 arquivo.log | sort | uniq -c | sort -nr | head
+```
+
+## Métodos HTTP utilizados
+
+```bash
+grep -oE "GET|POST|PUT|DELETE|HEAD|OPTIONS" arquivo.log | sort | uniq -c
+```
+
+## Códigos HTTP
+
+```bash
+cut -d " " -f9 arquivo.log | sort | uniq -c
+```
+
+## Erros HTTP
+
+```bash
+grep ' 4[0-9][0-9]\| 5[0-9][0-9]' arquivo.log
+```
+
+---
+
+# Filtros úteis
+
+## Apenas POST
+
+```bash
+grep "POST" arquivo.log
+```
+
+## Apenas GET
+
+```bash
+grep "GET" arquivo.log
+```
+
+## Apenas User-Agent
+
+```bash
+grep "Mozilla" arquivo.log
+```
+
+## Procurar um IP
+
+```bash
+grep "192.168.1.10" arquivo.log
+```
+
+## Procurar uma extensão
+
+```bash
+grep ".php" arquivo.log
+```
+
+---
+
+# Combinações úteis
+
+## Mostrar somente os 10 IPs mais ativos
+
+```bash
+cut -d " " -f1 arquivo.log | sort | uniq -c | sort -nr | head
+```
+
+## Mostrar somente as 10 páginas mais acessadas
+
+```bash
+cut -d " " -f7 arquivo.log | sort | uniq -c | sort -nr | head
+```
+
+## Primeira ocorrência
+
+```bash
+grep "admin" arquivo.log | head -1
+```
+
+## Última ocorrência
+
+```bash
+grep "admin" arquivo.log | tail -1
+```
+
+## Contar logins
+
+```bash
+grep -c "login" arquivo.log
+```
+
+---
+
+# Ferramentas essenciais
+
+| Comando | Função |
+|----------|---------|
+| `cat` | Exibir arquivo |
+| `less` | Navegar pelo arquivo |
+| `head` | Primeiras linhas |
+| `tail` | Últimas linhas |
+| `grep` | Buscar padrões |
+| `cut` | Extrair colunas |
+| `sort` | Ordenar |
+| `uniq` | Remover/contar duplicados |
+| `wc` | Contar linhas, palavras e caracteres |
+| `awk` | Processar colunas (avançado) |
+| `sed` | Editar/Substituir texto |
+| `xargs` | Encadear comandos |
+
+---
+
+# Fluxo básico de análise
+
+```text
+Visualizar
+     │
+     ▼
+head / tail / less
+     │
+     ▼
+Pesquisar
+     │
+     ▼
+grep
+     │
+     ▼
+Extrair colunas
+     │
+     ▼
+cut
+     │
+     ▼
+Ordenar
+     │
+     ▼
+sort
+     │
+     ▼
+Eliminar duplicados
+     │
+     ▼
+uniq -c
+     │
+     ▼
+Encontrar os Top N
+     │
+     ▼
+sort -nr | head
+```
+
+---
+
+## 💡 Dica
+
+A combinação mais utilizada em investigações de logs é:
+
+```bash
+cat arquivo.log | cut -d " " -f1 | sort | uniq -c | sort -nr | head
+```
+
+Ela mostra rapidamente os IPs com maior número de requisições, sendo uma das primeiras verificações em análises de incidentes, pentests e investigações forenses.
