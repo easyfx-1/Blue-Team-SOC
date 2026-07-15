@@ -1,0 +1,175 @@
+# Análise de Logs (Linux)
+
+## 1. Descobrir IPs mais ativos
+
+```bash
+cut -d' ' -f1 LAB.LOG | sort | uniq -c | sort -nr
+```
+
+> Lista todos os IPs ordenados pela quantidade de requisições.
+
+---
+
+## 2. Filtrar um IP específico
+
+```bash
+grep "IP" LAB.LOG
+```
+
+Exemplo:
+
+```bash
+grep "205.251.150.186" LAB.LOG
+```
+
+> Exibe todas as ações realizadas por um IP.
+
+---
+
+## 3. Filtrar por código HTTP
+
+```bash
+grep "IP" LAB.LOG | grep " 200 "
+```
+
+Status mais comuns:
+
+- `200` → Sucesso
+- `301` → Redirecionamento
+- `302` → Redirecionamento temporário
+- `403` → Acesso negado
+- `404` → Arquivo inexistente
+- `500` → Erro interno
+
+---
+
+## 4. Filtrar por método HTTP
+
+```bash
+grep "GET" LAB.LOG
+grep "POST" LAB.LOG
+grep "HEAD" LAB.LOG
+grep "OPTIONS" LAB.LOG
+```
+
+**GET** → Consultar recurso
+
+**POST** → Enviar dados
+
+**HEAD** → Consultar apenas cabeçalhos
+
+**OPTIONS** → Descobrir métodos permitidos
+
+---
+
+## 5. Mostrar apenas a URL
+
+```bash
+cut -d'"' -f2
+```
+
+Exemplo:
+
+```bash
+grep "IP" LAB.LOG | grep "200" | cut -d'"' -f2
+```
+
+Resultado:
+
+```
+GET /admin/
+GET /config/db.sql
+POST /login/
+```
+
+---
+
+## 6. Mostrar somente o caminho
+
+```bash
+grep "IP" LAB.LOG | grep "200" | cut -d'"' -f2 | awk '{print $2}'
+```
+
+Resultado:
+
+```
+/admin/
+/config/db.sql
+/login/
+```
+
+---
+
+## 7. Procurar um diretório
+
+```bash
+grep "admin" LAB.LOG
+grep "backup" LAB.LOG
+grep "config" LAB.LOG
+```
+
+---
+
+## 8. Procurar arquivos sensíveis
+
+```bash
+grep -Ei "db.sql|backup|passwd|password|config|secret|\.env" LAB.LOG
+```
+
+---
+
+## 9. Ver linha do tempo do atacante
+
+```bash
+grep "IP" LAB.LOG
+```
+
+Observe:
+
+- horário
+- método HTTP
+- URL
+- código HTTP
+- quantidade de bytes
+
+---
+
+## 10. Contar diretórios acessados
+
+```bash
+grep "IP" LAB.LOG | cut -d'"' -f2 | awk '{print $2}' | cut -d'/' -f2 | sort | uniq -c | sort -nr
+```
+
+---
+
+## Fluxo de investigação
+
+```
+Descobrir IP
+      ↓
+Filtrar IP
+      ↓
+Filtrar 200
+      ↓
+Analisar URLs
+      ↓
+Identificar arquivos sensíveis
+      ↓
+Montar linha do tempo do ataque
+```
+
+---
+
+# Comandos essenciais
+
+```bash
+grep      # Filtrar conteúdo
+cut       # Separar campos
+awk       # Manipular colunas
+sort      # Ordenar
+uniq -c   # Contar ocorrências
+head      # Primeiras linhas
+tail      # Últimas linhas
+less      # Navegar no arquivo
+wc -l     # Contar linhas
+```
