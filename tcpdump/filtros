@@ -1,0 +1,304 @@
+# Tcpdump - Cheat Sheet
+
+## Captura básica
+
+```bash
+sudo tcpdump
+```
+
+> Captura todos os pacotes da interface padrão.
+
+---
+
+## Escolher interface
+
+```bash
+sudo tcpdump -i eth0
+```
+
+ou
+
+```bash
+sudo tcpdump -i any
+```
+
+> Captura em uma interface específica.
+
+---
+
+## Mostrar interfaces
+
+```bash
+tcpdump -D
+```
+
+---
+
+## Não resolver nomes
+
+```bash
+sudo tcpdump -n
+```
+
+> Exibe apenas IPs (mais rápido).
+
+---
+
+## Capturar um host
+
+```bash
+sudo tcpdump host 192.168.1.10
+```
+
+---
+
+## Origem
+
+```bash
+sudo tcpdump src host 192.168.1.10
+```
+
+---
+
+## Destino
+
+```bash
+sudo tcpdump dst host 192.168.1.10
+```
+
+---
+
+## Filtrar porta
+
+```bash
+sudo tcpdump port 80
+```
+
+---
+
+## Porta de origem
+
+```bash
+sudo tcpdump src port 443
+```
+
+---
+
+## Porta de destino
+
+```bash
+sudo tcpdump dst port 22
+```
+
+---
+
+## Múltiplas portas
+
+```bash
+sudo tcpdump port 80 or port 443
+```
+
+---
+
+## Intervalo de portas
+
+```bash
+sudo tcpdump portrange 20-25
+```
+
+---
+
+## Filtrar protocolo
+
+TCP
+
+```bash
+sudo tcpdump tcp
+```
+
+UDP
+
+```bash
+sudo tcpdump udp
+```
+
+ICMP
+
+```bash
+sudo tcpdump icmp
+```
+
+ARP
+
+```bash
+sudo tcpdump arp
+```
+
+IPv6
+
+```bash
+sudo tcpdump ip6
+```
+
+---
+
+## Combinar filtros
+
+```bash
+sudo tcpdump tcp and port 80
+```
+
+```bash
+sudo tcpdump host 192.168.1.10 and port 22
+```
+
+---
+
+## Excluir
+
+```bash
+sudo tcpdump not port 22
+```
+
+```bash
+sudo tcpdump not host 192.168.1.1
+```
+
+---
+
+## Capturar somente um número de pacotes
+
+```bash
+sudo tcpdump -c 20
+```
+
+---
+
+## Ver payload em ASCII
+
+```bash
+sudo tcpdump -A
+```
+
+---
+
+## Ver payload em Hex
+
+```bash
+sudo tcpdump -X
+```
+
+---
+
+## Mais detalhes
+
+```bash
+sudo tcpdump -vv
+```
+
+---
+
+## Salvar captura
+
+```bash
+sudo tcpdump -w captura.pcap
+```
+
+---
+
+## Ler captura
+
+```bash
+tcpdump -r captura.pcap
+```
+
+---
+
+## Filtrar captura salva
+
+```bash
+tcpdump -r captura.pcap port 80
+```
+
+---
+
+# Filtros úteis
+
+HTTP
+
+```bash
+sudo tcpdump tcp port 80
+```
+
+HTTPS
+
+```bash
+sudo tcpdump tcp port 443
+```
+
+DNS
+
+```bash
+sudo tcpdump udp port 53
+```
+
+SSH
+
+```bash
+sudo tcpdump tcp port 22
+```
+
+FTP
+
+```bash
+sudo tcpdump port 21
+```
+
+ICMP (Ping)
+
+```bash
+sudo tcpdump icmp
+```
+
+ARP
+
+```bash
+sudo tcpdump arp
+```
+
+---
+
+# Fluxo profissional
+
+```text
+Escolher interface
+        ↓
+Capturar
+        ↓
+Aplicar filtros (host, porta, protocolo)
+        ↓
+Salvar (.pcap)
+        ↓
+Analisar no Wireshark
+```
+
+---
+
+# Comandos essenciais
+
+```bash
+tcpdump -D                 # Interfaces
+tcpdump -i eth0            # Interface
+tcpdump -n                 # Sem DNS
+tcpdump host IP            # Host
+tcpdump port 80            # Porta
+tcpdump tcp                # TCP
+tcpdump udp                # UDP
+tcpdump icmp               # ICMP
+tcpdump arp                # ARP
+tcpdump -A                 # ASCII
+tcpdump -X                 # HEX
+tcpdump -c 20              # Limite de pacotes
+tcpdump -w arquivo.pcap    # Salvar
+tcpdump -r arquivo.pcap    # Ler captura
+```
