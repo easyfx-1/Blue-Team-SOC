@@ -301,4 +301,9 @@ tcpdump -X                 # HEX
 tcpdump -c 20              # Limite de pacotes
 tcpdump -w arquivo.pcap    # Salvar
 tcpdump -r arquivo.pcap    # Ler captura
+
+
+comando pra ver portas abertas
+tcpdump -vnr scan_interno.pcap src host numero IP | cut -d "," -f1 | grep -v tos | grep -v "S" | grep "F\."
+
 ```
